@@ -1,8 +1,2 @@
-﻿  ASnakeGameState.cpp
-  GameScene.cpp
-  NetworkManager.cpp
-  OClient.cpp
-  OServer.cpp
-  TCPManager.cpp
-  코드를 생성하고 있습니다...
-  SnakeGame.vcxproj -> C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\x64\Debug\SnakeGame.exe
+﻿  TextManager.cpp
+  SnakeGame.vcxproj -> C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_File&exe\SnakeGame_실행파일\x64\Debug\SnakeGame.exe

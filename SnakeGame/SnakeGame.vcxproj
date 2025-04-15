@@ -123,7 +123,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -141,88 +141,35 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2_image.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AAppleSpawner.cpp" />
-    <ClCompile Include="Actor.cpp" />
-    <ClCompile Include="ActorManager.cpp" />
-    <ClCompile Include="ABlock.cpp" />
-    <ClCompile Include="AOpponent.cpp" />
-    <ClCompile Include="ASnake.cpp" />
-    <ClCompile Include="ATexture.cpp" />
-    <ClCompile Include="DebugMessageManager.cpp" />
-    <ClCompile Include="FileReader.cpp" />
-    <ClCompile Include="FrameWork.cpp" />
     <ClCompile Include="GameScene.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GameServer.cpp" />
-    <ClCompile Include="GameStartScene.cpp" />
-    <ClCompile Include="InputHandleManager.cpp" />
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="AMap.cpp" />
-    <ClCompile Include="MultiThreadManager.cpp" />
-    <ClCompile Include="NetworkManager.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="ObjectManager.cpp" />
-    <ClCompile Include="ASnakeGameState.cpp" />
-    <ClCompile Include="OClient.cpp" />
-    <ClCompile Include="OServer.cpp" />
-    <ClCompile Include="OWindow.cpp" />
-    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SpriteManager.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="TCPManager.cpp" />
     <ClCompile Include="TextManager.cpp" />
-    <ClCompile Include="RenderManager.cpp" />
-    <ClCompile Include="AText.cpp" />
-    <ClCompile Include="UDPManager.cpp" />
-    <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AAppleSpawner.h" />
-    <ClInclude Include="Actor.h" />
-    <ClInclude Include="ActorManager.h" />
-    <ClInclude Include="ABlock.h" />
-    <ClInclude Include="AOpponent.h" />
-    <ClInclude Include="ATexture.h" />
-    <ClInclude Include="DebugMessageManager.h" />
-    <ClInclude Include="FileReader.h" />
-    <ClInclude Include="FrameWork.h" />
     <ClInclude Include="GameScene.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="AMap.h" />
-    <ClInclude Include="GameServer.h" />
-    <ClInclude Include="GameStartScene.h" />
-    <ClInclude Include="InputHandleManager.h" />
-    <ClInclude Include="MultiThreadManager.h" />
-    <ClInclude Include="NetworkManager.h" />
-    <ClInclude Include="Object.h" />
-    <ClInclude Include="ObjectManager.h" />
-    <ClInclude Include="ASnake.h" />
-    <ClInclude Include="ASnakeGameState.h" />
-    <ClInclude Include="OClient.h" />
-    <ClInclude Include="OServer.h" />
-    <ClInclude Include="OWindow.h" />
-    <ClInclude Include="Scene.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SpriteManager.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="TCPManager.h" />
+    <ClInclude Include="stdafx.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="TextManager.h" />
-    <ClInclude Include="RenderManager.h" />
-    <ClInclude Include="AText.h" />
-    <ClInclude Include="UDPManager.h" />
-    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,84 +1,70 @@
+#include "stdafx.h"
 #include "TextManager.h"
 
-TextManager* TextManager::m_pInstance = nullptr;
-void TextManager::CreateInstance() 
-{
-	if (m_pInstance != 0)
-		return;
-	TTF_Init();
-	m_pInstance = new TextManager();
-	using namespace FontData;
+TextManager* TextManager::instance_ = 0;
 
-	for (int i = 0; i < E_FontID::E_EnmMax; i++)
-	{
-		m_pInstance->LoadFont((E_FontID)i);
-	}
+void TextManager::CreateInstance() {
+	if (instance_ != 0) return;
+	TTF_Init();
+	instance_ = new TextManager();
 }
 
-void TextManager::DestroyInstance()
-{
-	if (!m_pInstance)
-		return;
-	using namespace std;
-	using namespace FontData;
+void TextManager::DestroyInstance() {
+	if (instance_ == 0) return;
 
-	for (int i = 0; i < E_FontID::E_EnmMax; i++)
 	{
-		map<int, TTF_Font*>& mapTTP = m_pInstance->m_mapOpendFont[i];
-		map<int, TTF_Font*>::iterator pIter = mapTTP.begin();
-		while (pIter != mapTTP.end())
-		{
-			TTF_CloseFont(pIter->second);
-			pIter->second = nullptr;
-			pIter++;
-		}
+		instance_->files_map_.clear();
 	}
-	map<int, TTF_Font*> m_mapOpendFont[E_FontID::E_EnmMax];
 
-	delete(m_pInstance);
-	m_pInstance = nullptr;
+	delete(instance_);
 	TTF_Quit();
 }
 
-std::string TextManager::GetFontPath()
-{
-	return "../Resources/Font/";
+TextManager* TextManager::GetSingleton() {
+	return instance_;
 }
 
-std::string TextManager::GetFontName(FontData::E_FontID eFontID)
+void TextManager::LoadFont(std::string font_id, std::string font_files)
 {
-	std::string arData[FontData::E_FontID::E_EnmMax]{};
-	arData[FontData::E_FontID::E_cutetat] = "cutetat.ttf";
-	return arData[eFontID];
+	instance_->files_map_[font_id] = font_files;
 }
 
-TTF_Font* TextManager::GetTTFFont(FontData::E_FontID eFontID, int nFontSize)
+void TextManager::RenderFont(TextInfo* info, std::string str) 
 {
-	if (eFontID >= FontData::E_FontID::E_EnmMax || eFontID < 0)
-		eFontID = FontData::E_FontID::E_cutetat;
-	std::pair<std::map<int, TTF_Font*>::iterator, bool> FontIter = m_mapOpendFont[eFontID].insert({ nFontSize, nullptr });
-	TTF_Font*& pTTFFont = FontIter.first->second;
-	if (!pTTFFont)
-	{
-		pTTFFont = TTF_OpenFont(m_arFontPath[eFontID].c_str(), nFontSize);
-	}
-	return pTTFFont;
+	// id에 해당되는 font가 없으면 그리기 중지
+	if (instance_->files_map_[info->font_id].empty())
+		return;
+
+	// font file을 연다.
+	TTF_Font* font1 = TTF_OpenFont((instance_->files_map_[info->font_id]).c_str(), info->font_size);
+	// 해당 파일이 없으면 return;
+	if (font1 == 0)
+		return;
+
+	SDL_Surface* tmp_surface;
+		//tmp_surface = TTF_RenderUTF8_Blended(font1, CW2A(info->fun(str).c_str(), CP_UTF8), info->font_color);
+		//tmp_surface = TTF_RenderText_Blended(font1, CT2CA(info->fun(str).c_str()), info->font_color);
+	//if (info->isKorea) // 한국어 일때 인코딩 방법
+		tmp_surface = TTF_RenderUTF8_Blended(font1, str.c_str(), info->font_color);
+	//else // 그외 인코딩 방법
+	//	tmp_surface = TTF_RenderText_Blended(font1, str.c_str(), info->font_color);
+	TTF_CloseFont(font1);
+	font1 = nullptr;
+
+	// 인코딩 값을 texture에  넣는다..
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(g_renderer, tmp_surface);
+	SDL_Rect source_rect = { 0,0, tmp_surface->w ,tmp_surface->h };
+	SDL_FRect target_rect = { info->target_pos.x, info->target_pos.y, (float)tmp_surface->w,	(float)tmp_surface->h };
+
+	SDL_FreeSurface(tmp_surface);
+	tmp_surface = nullptr;
+
+	if (texture == nullptr)
+		return;
+
+	// texture 도 있으면 위치에 text를 그린다.
+	SDL_RenderCopyF(g_renderer, texture, &source_rect, &target_rect);
+
+	SDL_DestroyTexture(texture);
+	texture = nullptr;
 }
-
-void TextManager::LoadFont(FontData::E_FontID eFonID)
-{
-	if (m_pInstance->m_arFontPath[eFonID].empty())
-		m_pInstance->m_arFontPath[eFonID] = GetFontPath() + GetFontName(eFonID);
-}
-
-SDL_Surface* TextManager::CreateFontSurface(FontData::TextInfo* info, std::string& str)
-{
-	FontData::E_FontID eFontID = info->eFontID;
-	std::string& strPath = m_pInstance->m_arFontPath[eFontID];
-	TTF_Font* pTTFFont = m_pInstance->GetTTFFont(eFontID, info->nFontSize);
-	if (!pTTFFont)
-		return nullptr;
-	return  TTF_RenderUTF8_Blended(pTTFFont, str.c_str(), info->sFontColor);
-}
-
-

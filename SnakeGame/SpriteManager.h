@@ -1,80 +1,94 @@
 #pragma once
 
-#include <string>
-#include <vector>
-#include "SDL.h"
 
-namespace Sprite
+struct SpriteInfo
 {
-	enum E_SpriteType
+public:
+	SpriteInfo(std::string file_id) {
+		this->file_id = file_id;
+		sizeX = 1.0f;
+		sizeY = 1.0f;
+		flipsMode = SDL_FLIP_NONE;
+		currentIndex = 0;
+		color = { 255,255,255,0 };
+		brender = true;
+		spriteSpeed = -1;
+		currenttime = 0;
+	}
+	SpriteInfo()
 	{
-		E_None,
-		E_Block,
-		E_Background,
-		E_EnumMax
+		this->file_id = "";
+		sizeX = 1.0f;
+		sizeY = 1.0f;
+		flipsMode = SDL_FLIP_NONE;
+		currentIndex = 0;
+		color = { 255,255,255,0 };
+		brender = true;
+		spriteSpeed = -1;
+		currenttime = 0;
+		bloop = true;
+		bend = false;
+	}
+	~SpriteInfo() {
 	};
-	namespace Background
-	{
-		enum E_SpriteID
-		{
-			E_None,
-			E_Title,
-			E_EnumMax
-		};
-	}
 
-	namespace Block
-	{
-		enum E_SpriteID
-		{
-			E_None,
-			E_CurveRightDown,
-			E_Row,
-			E_CurveLeftDown,
-			E_UpHead,
-			E_RightHead,
-			E_CurveRightUp,
-			E_Col,
-			E_LeftHead,
-			E_DownHead,
-			E_CurveLeftUp,
-			E_UpTial,
-			E_RightTial,
-			E_LeftTial,
-			E_DownTial,
-			E_RedApple,
-			E_GoldApple,
-			E_BlueApple,
-			E_EnumMax
-		};
-	}
-}
+	// drawRect & size
+	float sizeX;
+	float sizeY;
+
+	// draw image
+	std::string file_id; // file id
+	std::string sprite_id; //sprite id (연속해서 그릴 그림의 id)
+	int currentIndex; 
+
+	SDL_RendererFlip flipsMode;  // flips
+	SDL_Color color;
+
+	float spriteSpeed; // randering speed
+	Uint32 currenttime;
+
+	bool brender; // draw or not
+	bool bloop;
+	bool bend;
+};
 
 class SpriteManager
 {
 private:
-	SpriteManager() = default;
-	static SpriteManager* m_pInstance;
+	SpriteManager() {};
+	static SpriteManager* instance_;
 
 public:
 
 	// Singleton
 	static void CreateInstance();
 	static void DestroyInstance();
+	static SpriteManager* GetSingleton();
 
-	static SDL_Surface* LoadImageSurface(Sprite::E_SpriteType eSpriteType);
-	static bool RegisterSpriteRect(Sprite::E_SpriteType eSpriteType, unsigned int nIndex,const SDL_Rect& rect);
-	static bool GetSpriteSourceRect(Sprite::E_SpriteType eSpriteType, unsigned int nIndex, SDL_Rect& sRect);
-	static std::string GetFilePath();
-	static std::string GetImageFile(Sprite::E_SpriteType eSpriteType);
-	static SDL_Surface* GetImageSurface(Sprite::E_SpriteType eSpriteType);
+	// Load Texture 
+	static bool LoadTexture(std::string file_id, std::string file_name);
+	static bool LoadTexture(std::string file_id, std::string file_name, unsigned char color_key_r, unsigned char color_key_g, unsigned char color_key_b);
+	 
+	static void AddSpriteRect(std::string sprite_id, SDL_Rect* rect);
 
+	// Draw
+	static void DrawSprite(SDL_FRect* drawRect, SpriteInfo* info);
+
+	// setting
+	static size_t GetSpriteIndexSize(std::string sprite_id) { return instance_->sprite_rects_[sprite_id]->size();  }
+
+	static bool HasSpriteRects(std::string sprite_id) { return instance_->sprite_rects_[sprite_id] != nullptr ? true : false; }
+	static SDL_Rect* GetSpriteRect(std::string sprite_id) { return &(*instance_->sprite_rects_[sprite_id])[0]; }
+
+	//debug
+	static void DrawDebugRect(SDL_FRect* info, float sizeX =1, float sizeY =1, SDL_Color color = { 255,0,0 });
+	void DrawDebugRect(SDL_FRect* info, SDL_Color color);
+	static void DrawDebugBorder(SDL_FRect* info, float sizeX = 1, float sizeY = 1, SDL_Color color = { 255,0,0 });
+
+	void DrawDebugBorder(SDL_FRect* info, SDL_Color color);
+
+	bool bDebug;
 private:
-	void GetSourceRect(Sprite::E_SpriteType eSpriteType, std::vector< SDL_Rect>& arResult);
-private:
-	unsigned int m_arSpriteIndex[Sprite::E_SpriteType::E_EnumMax];
-	SDL_Rect* m_arSprite[Sprite::E_SpriteType::E_EnumMax];
-	SDL_Surface* m_arSpriteSurface[Sprite::E_SpriteType::E_EnumMax];
-	SDL_Rect m_arSnake[(int)Sprite::Block::E_SpriteID::E_EnumMax];
-	SDL_Rect m_arTexture[(int)Sprite::Background::E_SpriteID::E_EnumMax];
+	std::map<std::string, SDL_Texture*> texture_map_;
+	std::map<std::string, std::vector<SDL_Rect>*> sprite_rects_;
 };

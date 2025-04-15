@@ -14,92 +14,9 @@
     <ClCompile Include="SoundManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="RenderManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="AText.cpp">
-      <Filter>Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="ABlock.cpp">
-      <Filter>Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="AMap.cpp">
-      <Filter>Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="InputHandleManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="ASnake.cpp">
-      <Filter>Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameWork.cpp">
-      <Filter>GameFrameWork</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>GameFrameWork\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Actor.cpp">
-      <Filter>GameFrameWork\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="ActorManager.cpp">
-      <Filter>GameFrameWork\Object\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectManager.cpp">
-      <Filter>GameFrameWork\Object\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="ASnakeGameState.cpp">
-      <Filter>Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="AAppleSpawner.cpp">
-      <Filter>Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="TCPManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="GameServer.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="MultiThreadManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="UDPManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="NetworkManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="OWindow.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="OServer.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="OClient.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugMessageManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="FileReader.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="GameStartScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="ATexture.cpp">
-      <Filter>Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="AOpponent.cpp">
-      <Filter>Actor</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="stdafx.h" />
     <ClInclude Include="GameScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -112,90 +29,6 @@
     <ClInclude Include="SoundManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="RenderManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="AText.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="ABlock.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="AMap.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="ASnake.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="InputHandleManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameWork.h">
-      <Filter>GameFrameWork</Filter>
-    </ClInclude>
-    <ClInclude Include="Actor.h">
-      <Filter>GameFrameWork\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>GameFrameWork\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="ActorManager.h">
-      <Filter>GameFrameWork\Object\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectManager.h">
-      <Filter>GameFrameWork\Object\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="ASnakeGameState.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="AAppleSpawner.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="TCPManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="GameServer.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="MultiThreadManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="NetworkManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="UDPManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="OWindow.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="OServer.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="OClient.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugMessageManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="FileReader.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStartScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="ATexture.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="AOpponent.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">
@@ -203,21 +36,6 @@
     </Filter>
     <Filter Include="Manager">
       <UniqueIdentifier>{d17a8c11-1d47-4b23-94c8-29b887d5e58f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameFrameWork">
-      <UniqueIdentifier>{6eebc572-97b3-47b1-8ee2-e6c50b004337}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor">
-      <UniqueIdentifier>{7014a0bb-29d0-47c1-9c73-5a27c8dc2b88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameFrameWork\Object">
-      <UniqueIdentifier>{0d079894-a8d4-44d4-b822-a5178dd4f465}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameFrameWork\Object\Manager">
-      <UniqueIdentifier>{0bc335ed-bf01-4bf4-b325-a5b3945f85f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{46aa435f-4881-409a-be25-2644d97a3b09}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

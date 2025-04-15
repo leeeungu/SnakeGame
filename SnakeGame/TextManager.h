@@ -1,56 +1,49 @@
 #pragma once
 
-#include <string>
-#include <map>
-#include "SDL.h"
-#include "SDL_ttf.h"
 
-
-namespace FontData
+struct TextInfo
 {
-	enum E_FontID
+public:
+	TextInfo(std::string font_id)
+		:font_id(font_id)
 	{
-		E_cutetat,
-		E_EnmMax
-	};
+		font_size = 11;
+		font_color = { 255,255,255,255 };
+		target_pos = { 0,0 };
+		isKorea = false;
+		//fun = [](std::string input) {return input; };
+		//str = L"";
+	}
+	~TextInfo() {};
+	std::string font_id;
+	int font_size;
+	bool isKorea;
 	
-	struct TextInfo
-	{
-	public:
-		TextInfo() = default;
-		TextInfo(E_FontID eInputFontID)
-			: eFontID(eInputFontID), sFontColor{}, nFontSize{}, bIsKorea{}
-		{
-		}
-		~TextInfo() = default;
-		E_FontID eFontID;
-		SDL_Color sFontColor = { 0,0,0,0 };
-		int nFontSize = 11;
-		bool bIsKorea = true;
-	};
-}
+	std::function<std::string(std::string)> fun; 
+	SDL_Color font_color;
+	SDL_FPoint target_pos;
+};
 
-// Singleton
 class TextManager
 {
 private:
-	TextManager()  = default;
-	static TextManager* m_pInstance;
+	TextManager() {};
+	static TextManager* instance_;
+
 public:
+
+	// Singleton
 	static void CreateInstance();
 	static void DestroyInstance();
-private:
-	std::string GetFontPath();
-	std::string GetFontName(FontData::E_FontID eFontID);
-	TTF_Font* GetTTFFont(FontData::E_FontID eFontID, int nFontSize);
+	static TextManager* GetSingleton();
+
 	// Load Font
-	void LoadFont(FontData::E_FontID eFontID);
-public:
+	void LoadFont(std::string font_id, std::string font_files);
+
 	// Draw Font
-	static SDL_Surface* CreateFontSurface(FontData::TextInfo* info, std::string& str);
-	
+	void RenderFont(TextInfo* info, std::string str);
+
 private:
-	std::string m_arFontPath[FontData::E_FontID::E_EnmMax];
-	std::map<int, TTF_Font*> m_mapOpendFont[FontData::E_FontID::E_EnmMax];
+	std::map<std::string, std::string> files_map_;
 };
 
