@@ -32,5 +32,7 @@
 *.app
 
 
-*.vs
+*.vs/*
+x64/*
 */ServerIP.txt
+Resources/ServerIP/ServerIP.txt
