@@ -1,76 +1,37 @@
 #pragma once
 
-#include <string>
-#include "SDL_mixer.h"
-
-namespace Sound
-{
-	namespace Music
-	{
-		enum E_DataID
-		{
-			E_GameOver,
-			E_Background,
-			E_EnumMax
-		};
-	}
-
-	namespace Chunk
-	{
-		namespace Apple
-		{
-			enum E_DataID
-			{
-				E_None,
-				E_RedApple,
-				E_GoldApple,
-				E_BlueApple,
-				E_EnumMax
-			};
-		}
-	}
-}
-
 class SoundManager
 {
 private:
 	SoundManager() {};
-	static SoundManager* m_pInstance;
+	static SoundManager* instance_;
 
 public:
 
 	// Singleton
 	static void CreateInstance();
 	static void DestroyInstance();
+	static SoundManager* GetSingleton();
 
-private:
-	static std::string GetSoundPath();
-	static std::string GetChunkName(Sound::Chunk::Apple::E_DataID eChunkID);
-	static std::string GetMusicName(Sound::Music::E_DataID eMusicID);
-
-public:
 	// Load Sound
-	static bool LoadMusic(Sound::Music::E_DataID eMusicID);
-	static bool LoadChunk(Sound::Chunk::Apple::E_DataID eChunkID);
+	bool LoadMusic(std::string music_id, std::string file_name_mp3);
+	bool LoadChunk(std::string chunk_id, std::string file_name_wav, int volume = 5);
 
 	// main music
-	static void FadeInMusic(Sound::Music::E_DataID eMusicID, int loops = -1, int ms = 1000);
-	static void FadeOutMusic(int ms);
+	void FadeInMusic(std::string music_id, int loops = -1 , int ms = 1000);
+	void FadeOutMusic(int ms);
 
 	// channel chunk
-	static void PlayChannel(Sound::Chunk::Apple::E_DataID eChunkID, int loops = 0, int channel = -1);
+	void PlayChannel(std::string chunk_id, int loops = 0, int channel = -1);
 
 	// Setting
-	static void SetVolumeMusic(int volume) { m_pInstance->m_nMusicVolume = volume; }
-	static void SetVolumeChunk(int volume) { m_pInstance->m_nChunkVolume = volume; }
+	void SetVolumeMusic(int volume);
+	void SetVolumeChunk(std::string chunk_id, int volume);
 
 	// Mix_Music* GetMisic(std::string texture_id) { return music_map_[texture_id]; }
 private:
-	Mix_Music* m_pMainMusic;
-	Mix_Music* m_arMusic[Sound::Music::E_DataID::E_EnumMax];
-	Mix_Chunk* m_archunk[Sound::Chunk::Apple::E_DataID::E_EnumMax];
-
-	int m_nChunkVolume;
-	int m_nMusicVolume;
+	std::string main_Music;
+	std::map<std::string, Mix_Music*> music_map_;
+	std::map<std::string, Mix_Chunk*> chunk_map_;
 };
 

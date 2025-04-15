@@ -1,116 +1,182 @@
-#include "SDL_image.h"
+#include "stdafx.h"
 #include "SpriteManager.h"
-#include "DebugMessageManager.h"
 
-SpriteManager* SpriteManager::m_pInstance = 0;
+SpriteManager* SpriteManager::instance_ = 0;
 
 void SpriteManager::CreateInstance() {
-	if (m_pInstance != 0) return;
-	m_pInstance = new SpriteManager();
-	//instance_->bDebug = false;
-	using namespace Sprite;
-	m_pInstance->m_arSpriteIndex[E_SpriteType::E_Block] = Block::E_EnumMax;
-	m_pInstance->m_arSpriteIndex[E_SpriteType::E_Background] = Background::E_EnumMax;
-	m_pInstance->m_arSprite[E_SpriteType::E_Block] = m_pInstance->m_arSnake;
-	m_pInstance->m_arSprite[E_SpriteType::E_Background] = m_pInstance->m_arTexture;
+	if (instance_ != 0) return;
+	instance_ = new SpriteManager();
+	instance_->bDebug = false;
 }
 
 void SpriteManager::DestroyInstance() {
-	if (m_pInstance == 0) return;
+	if (instance_ == 0) return;
 	{
-		for (int i = 0; i < Sprite::E_SpriteType::E_EnumMax; i++)
+		std::map<std::string, SDL_Texture*>::iterator iter = instance_->texture_map_.begin();
+		while (iter != instance_->texture_map_.end())
 		{
-			SDL_Surface*& pSurface = m_pInstance->m_arSpriteSurface[i];
-			if (pSurface)
+			SDL_DestroyTexture(iter->second);
+			iter++;
+		}
+		instance_->texture_map_.clear();
+	}
+	{
+		// std::map<std::string, std::vector<SDL_Rect*>*> sprite_rects_;
+		std::map<std::string, std::vector<SDL_Rect>*>::iterator iter = instance_->sprite_rects_.begin();
+		while (iter != instance_->sprite_rects_.end())
+		{
+			if (iter->second != nullptr)
 			{
-				SDL_FreeSurface(pSurface);
+				iter->second->clear();
+				iter->second->shrink_to_fit();
+				delete iter->second;
 			}
-			pSurface = nullptr;
+			iter->second = nullptr;
+			iter++;
 		}
+		instance_->sprite_rects_.clear();
 	}
-	delete(m_pInstance);
-	m_pInstance = nullptr;
+	delete(instance_);
 }
 
-SDL_Surface* SpriteManager::LoadImageSurface(Sprite::E_SpriteType eSpriteType)
-{
-	SDL_Surface* pResult = GetImageSurface(eSpriteType);
-	if (pResult)
-		return pResult;
-	std::string File = GetFilePath() + GetImageFile(eSpriteType);
-	SDL_Surface*& pRef = m_pInstance->m_arSpriteSurface[eSpriteType];
-	pRef = IMG_Load(File.c_str());
-	if (pRef)
+SpriteManager* SpriteManager::GetSingleton(){
+	return instance_;
+}
+
+// 배경과 같이 정적인이미지의 로드 함수
+bool SpriteManager::LoadTexture(std::string file_id, std::string file_name){ // textrue
+	if (instance_->texture_map_[file_id] != nullptr)
+		return true;
+
+	SDL_Surface* temp_surface = IMG_Load(file_name.c_str());
+	if (temp_surface == 0)
+		return false;
+
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(g_renderer, temp_surface);
+	SDL_FreeSurface(temp_surface);
+	if (texture != 0)
 	{
-		std::vector<SDL_Rect> arResult{};
-		m_pInstance->GetSourceRect(eSpriteType, arResult);
-		int nIndex{};
-		for (SDL_Rect& Rect : arResult)
+		instance_->texture_map_[file_id] = texture;
+		return true;
+	}
+	
+	return false;
+}
+
+// 캐릭터 같이 동적 움직임을 가지는 load 방법
+bool SpriteManager::LoadTexture(std::string file_id, std::string file_name, unsigned char color_key_r, unsigned char color_key_g, unsigned char color_key_b) {
+	if (instance_->texture_map_[file_id] != nullptr)
+		return true;
+
+	SDL_Surface* temp_surface = IMG_Load(file_name.c_str());
+	if (temp_surface == 0)
+		return false;
+	SDL_SetColorKey(temp_surface, SDL_TRUE, SDL_MapRGB(temp_surface->format, color_key_r, color_key_g, color_key_b));
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(g_renderer, temp_surface);
+	
+	SDL_FreeSurface(temp_surface);
+
+	if (texture != 0)
+	{
+		instance_->texture_map_[file_id] = texture;
+		return true;
+	}
+	return false;
+}
+
+// 이미지 파일에서 선택할 영역을 미리 설정해주는 함수
+void SpriteManager::AddSpriteRect(std::string sprite_id, SDL_Rect* rect) {
+	if (instance_->sprite_rects_[sprite_id] == nullptr)
+		instance_->sprite_rects_[sprite_id] = new std::vector<SDL_Rect>();
+	instance_->sprite_rects_[sprite_id]->push_back(*rect);
+	delete rect;
+	rect = nullptr;
+}
+
+void SpriteManager::DrawSprite(SDL_FRect* drawRect, SpriteInfo* info) {
+	if (info == nullptr ||
+		info->brender == false ||
+		instance_->texture_map_[info->file_id]  == nullptr ||
+		instance_->sprite_rects_[info->sprite_id] == nullptr ||
+		instance_->sprite_rects_[info->sprite_id]->size() <= 0)
+		return;
+
+	SDL_SetTextureColorMod(instance_->texture_map_[info->file_id], info->color.r, info->color.g, info->color.b); // drawTexture(renderer, 0, 0, texture);
+
+	SDL_Rect* srcrect = &(*instance_->sprite_rects_[info->sprite_id])[info->currentIndex];
+
+	SDL_FRect targetrect = { 
+		drawRect->x , 
+		drawRect->y  ,
+		drawRect->w * info->sizeX,
+		drawRect->h * info->sizeY };
+
+	SDL_RenderCopyExF(g_renderer, instance_->texture_map_[info->file_id],
+		srcrect, &targetrect,
+		0.0f, nullptr, info->flipsMode);
+	srcrect = nullptr;
+	//*info->drawRect = targetrect;
+	DrawDebugBorder(&targetrect);
+
+	if (info->spriteSpeed > 0)	{
+		Uint32 time = SDL_GetTicks();
+		if (time - info->currenttime < (info->spriteSpeed * 1000))
+			return;
+		else
+			info->currenttime = time;
+	}
+	if (info->bend == true)
+		return;
+	info->currentIndex++;
+	if (info->currentIndex >= instance_->sprite_rects_[info->sprite_id]->size())
+	{
+		if (info->bloop == false)
 		{
-			SpriteManager::RegisterSpriteRect(eSpriteType, nIndex, Rect);
-			nIndex++;
+			info->bend = true;
 		}
+		info->currentIndex = 0;
 	}
-	else
-	{
-		DebugMessageManager::PrintDebugMesasge_Sprite(File.c_str(), "LoadFail");
-	}
-	return pRef;
 }
 
-bool SpriteManager::RegisterSpriteRect(Sprite::E_SpriteType eSpriteType, unsigned int nIndex,const SDL_Rect& sRect)
+void SpriteManager::DrawDebugRect(SDL_FRect* info, float sizeX , float sizeY, SDL_Color color)
 {
-	using namespace Sprite;
-	if (m_pInstance->m_arSpriteIndex[eSpriteType] <= nIndex || nIndex < 0)
-		return false;
-	m_pInstance->m_arSprite[eSpriteType][nIndex] = sRect;
-	return true;
+	if (instance_->bDebug == false)
+		return;
+	SDL_SetRenderDrawColor(g_renderer, color.r, color.g, color.b, color.a);
+	SDL_FRect temp = *info;
+	temp.w *= sizeX;
+	temp.h *= sizeY;
+	SDL_RenderFillRectF(g_renderer, &temp);
+	SDL_SetRenderDrawColor(g_renderer, 0, 0, 0, 0);
 }
 
-bool SpriteManager::GetSpriteSourceRect(Sprite::E_SpriteType eSpriteType, unsigned int nIndex, SDL_Rect& sRect)
+void SpriteManager::DrawDebugRect(SDL_FRect* info, SDL_Color color)
 {
-	if (m_pInstance->m_arSpriteIndex[eSpriteType] <= nIndex || nIndex < 0)
-		return false;
-	sRect = m_pInstance->m_arSprite[eSpriteType][nIndex];
-	return true;
+	if (instance_->bDebug == false)
+		return;
+	SDL_SetRenderDrawColor(g_renderer, color.r, color.g, color.b, color.a);
+	SDL_RenderFillRectF(g_renderer, info);
+	SDL_SetRenderDrawColor(g_renderer, 0, 0, 0, 0);
 }
 
-std::string SpriteManager::GetFilePath()
+void SpriteManager::DrawDebugBorder(SDL_FRect* info, float sizeX, float sizeY, SDL_Color color)
 {
-	return "../Resources/Texture/";
+	if (instance_->bDebug == false)
+		return;
+	SDL_SetRenderDrawColor(g_renderer, color.r, color.g, color.b, color.a);
+
+	SDL_FRect temp = *info;
+	temp.w *= sizeX;
+	temp.h *= sizeY;
+	SDL_RenderDrawRectF(g_renderer, &temp);
+	SDL_SetRenderDrawColor(g_renderer, 0, 0, 0, 0);
 }
 
-std::string SpriteManager::GetImageFile(Sprite::E_SpriteType eSpriteType)
+void SpriteManager::DrawDebugBorder(SDL_FRect* info, SDL_Color color)
 {
-	using namespace Sprite;
-	using namespace std;
-	string arData[E_SpriteType::E_EnumMax]{};
-	arData[E_SpriteType::E_Block] = "Snake.png";
-	arData[E_SpriteType::E_Background] = "SnakeGameTitle.png";
-	return arData[eSpriteType];
-}
-
-SDL_Surface* SpriteManager::GetImageSurface(Sprite::E_SpriteType eSpriteType)
-{
-	return m_pInstance->m_arSpriteSurface[eSpriteType];
-}
-
-void SpriteManager::GetSourceRect(Sprite::E_SpriteType eSpriteType, std::vector<SDL_Rect>& arResult)
-{
-	arResult.clear();
-	arResult.resize(m_pInstance->m_arSpriteIndex[eSpriteType]);
-	switch (eSpriteType)
-	{
-	case Sprite::E_Block:
-		arResult = { SDL_Rect{ 0, 0, 100, 1000 },
-			SDL_Rect{ 0, 0, 64, 64 }, SDL_Rect{ 64, 0, 64, 64 }, SDL_Rect{ 128, 0, 64, 64 }, SDL_Rect{ 192 , 0, 64, 64 },
-			SDL_Rect{ 256, 0, 64, 64 }, SDL_Rect{ 0, 64, 64, 64 }, SDL_Rect{ 128, 64, 64, 64 }, SDL_Rect{ 192, 64, 64, 64 },
-			SDL_Rect{ 256, 64, 64, 64 }, SDL_Rect{ 128, 128, 64, 64 }, SDL_Rect{ 192, 128, 64, 64 }, SDL_Rect{ 256, 128, 64, 64 },
-			SDL_Rect{ 192, 192, 64, 64 }, SDL_Rect{ 256, 192, 64, 64 }, SDL_Rect{ 0, 192, 64, 64 }, SDL_Rect{ 64, 192, 64, 64 }, SDL_Rect{ 0, 192, 64, 64 }
-		};
-		break;
-	case Sprite::E_Background:
-		arResult = { SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ 0, 0, 1700, 830} };
-		break;
-	}
+	if (instance_->bDebug == false)
+		return;
+	SDL_SetRenderDrawColor(g_renderer, color.r, color.g, color.b, color.a); 
+	SDL_RenderDrawRectF(g_renderer, info);
+	SDL_SetRenderDrawColor(g_renderer, 0,0,0,0);
 }
