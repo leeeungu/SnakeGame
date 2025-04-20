@@ -12,6 +12,11 @@ C_AAppleSpawner::C_AAppleSpawner()
     m_fSpawnTime = 500;
 }
 
+void C_AAppleSpawner::DelegateEventActor(int nIndex)
+{
+    m_pMap = (C_AMap*)GetEventActor(C_AAppleSpawner::E_EventActor::E_Map);
+}
+
 void C_AAppleSpawner::Update(Uint32 fDeltaTick)
 {
     m_fCurrentTime += fDeltaTick;
@@ -22,11 +27,6 @@ void C_AAppleSpawner::Update(Uint32 fDeltaTick)
     }
 }
 
-void C_AAppleSpawner::Reset()
-{
-    m_bUpdate = true;
-}
-
 bool C_AAppleSpawner::OverlapEvent(C_Actor* pActor)
 {
     m_bUpdate = true;
@@ -35,9 +35,7 @@ bool C_AAppleSpawner::OverlapEvent(C_Actor* pActor)
 
 void C_AAppleSpawner::SpawnApple()
 {
-    if (!m_pMap && m_arEventActor[E_Map])
-        m_pMap = dynamic_cast<C_AMap*>(m_arEventActor[E_Map]);
-    if (!m_pMap)
+    if (!m_pMap )
         return;
 
     using namespace Map;

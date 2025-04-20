@@ -62,7 +62,7 @@ namespace Network
 	{
 		enum E_ClientSize
 		{
-			E_Size = 2
+			E_Size = 10
 		};
 		struct S_Client : public Network::Host::S_Host
 		{
@@ -99,6 +99,8 @@ public:
 	static void CreateEventArray(int nSize);
 	static void SetServer(Network::Server::S_Server* pSrc, C_Object* pObject);
 	static void SetClient(Network::Client::S_Client* pSrc, C_Object* pObject);
+	static void Close_Server(Network::Server::S_Server* pSrc, C_Object* pObject);
+	static void Close_Client(Network::Client::S_Client* pSrc, C_Object* pObject);
 	static const char* GetServerIP() { return m_pInstance->m_strServer.c_str(); }
 	static Uint16 GetPortNum() { return m_pInstance->m_nPortNum; }
 

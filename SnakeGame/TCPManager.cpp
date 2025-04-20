@@ -45,7 +45,7 @@ void TCPManager::RecvData()
 			if (m_pInstance->m_pServer)
 				m_pInstance->AcceptTCPSocket();
 			TCPsocket pSrcSocket = *(*pCurrent);
-			while (pSrcSocket && SDLNet_SocketReady(pSrcSocket))
+			if (pSrcSocket && SDLNet_SocketReady(pSrcSocket))
 			{
 				using namespace TCP::Message;
 				m_pInstance->m_pRecvSocket = &pSrcSocket;
@@ -54,36 +54,48 @@ void TCPManager::RecvData()
 				{
 					NetworkManager::RunObject(Network::Protocol::E_TCP, 0, sData.nMessageType, &sData, sData.nMessageSize);
 				}
+				if (pIter == m_pInstance->m_setHost.end() || !(*pCurrent))
+					pSrcSocket = nullptr;
 			}
 		}
 	}
 }
 
+bool TCPManager::GetRecvMessage(void* ppResult)
+{
+	if (m_pInstance->m_pRecvSocket && m_pInstance->m_pRecvMessage)
+	{
+		memcpy(ppResult, m_pInstance->m_pRecvMessage, m_pInstance->m_sData.nMessageSize);
+		return true;
+	}
+	return false;
+}
+
+int TCPManager::RecvData(TCPsocket& pSocket)
+{
+	if (m_pInstance->m_pServer && m_pInstance->m_pServer->sTCPSocket == pSocket)
+		return 0;
+	using namespace TCP::Message;
+	m_pInstance->m_pRecvSocket = &pSocket;
+	m_pInstance->m_sData.nMessageSize = sizeof(S_Data);
+	while (m_pInstance->m_pRecvSocket && SDLNet_SocketReady(m_pInstance->m_pRecvSocket))
+	{
+		RecvSocketMessage(&m_pInstance->m_sData, m_pInstance->m_sData.nMessageSize);
+		NetworkManager::RunObject(Network::Protocol::E_TCP, 0, m_pInstance->m_sData.nMessageType, m_pInstance->m_pRecvMessage, m_pInstance->m_sData.nMessageSize);
+		m_pInstance->m_pRecvSocket = nullptr;
+	}
+	return 0;
+}
+
 bool TCPManager::Open_Server(Network::Server::S_Server* pSrc)
 {
-	bool bReuslt = m_pInstance->Open_TCP(pSrc, NULL, NetworkManager::GetPortNum());
 	m_pInstance->m_pServer = pSrc;
-	return bReuslt;
+	return m_pInstance->Open_TCP(pSrc, NULL, NetworkManager::GetPortNum());
 }
 
 bool TCPManager::Open_Client(Network::Client::S_Client* pSrc)
 {
-	bool bReuslt = m_pInstance->Open_TCP(pSrc, NetworkManager::GetServerIP(), NetworkManager::GetPortNum());
-	//int nReady = SDLNet_CheckSockets(m_pInstance->m_SocketSet, m_pInstance->m_nNetTimeout);
-	//if (nReady >= 0)
-	//{
-	//	TCPsocket& pSrcSocket = pSrc->sTCPSocket;
-	//	if (SDLNet_SocketReady(pSrcSocket))
-	//	{
-	//		using namespace TCP::Message;
-	//		S_LogIn sData{};
-	//		if (m_pInstance->RecvMessage(pSrcSocket, &sData, sData.sData.nMessageSize))
-	//		{
-	//			NetworkManager::RunObject(Network::Protocol::E_TCP, 0, sData.sData.nMessageType, &sData, sData.sData.nMessageSize);
-	//		}
-	//	}
-	//}
-	return bReuslt;		
+	return  m_pInstance->Open_TCP(pSrc, NetworkManager::GetServerIP(), NetworkManager::GetPortNum());
 }
 
 bool TCPManager::Close_TCP(Network::Host::S_Host* pSrc)
@@ -97,16 +109,21 @@ bool TCPManager::Close_TCP(Network::Host::S_Host* pSrc)
 
 bool TCPManager::RecvSocketMessage(void* pMessage, int nLen)
 {
-	return m_pInstance->RecvMessage(*m_pInstance->m_pRecvSocket, pMessage, nLen);
+	if (m_pInstance->m_pRecvSocket)
+		return m_pInstance->RecvMessage(*m_pInstance->m_pRecvSocket, pMessage, nLen);
+	return false;
 }
 
 bool TCPManager::TCPSendMessage(Network::Host::S_Host& pSrc, void* pMessage)
 {
 	using namespace TCP::Message;
 	S_Data sData{};
-	int nData = sData.nMessageSize;
+	int nData = sizeof(S_Data);
 	memcpy(&sData, pMessage, nData);
-	return m_pInstance->SendMessage(pSrc.sTCPSocket, &sData, nData) &&	m_pInstance->SendMessage(pSrc.sTCPSocket, pMessage, sData.nMessageSize);
+	bool bResult{};
+	bResult = m_pInstance->SendMessage(pSrc.sTCPSocket, &sData, nData);
+	bResult &= m_pInstance->SendMessage(pSrc.sTCPSocket, pMessage, sData.nMessageSize);
+	return bResult;
 }
 
 void TCPManager::AddSocketSet(Network::Host::S_Host* pHost)
@@ -137,6 +154,9 @@ void TCPManager::PrintMessageType(TCP::Message::E_Message eMessageType, const ch
 		break;
 	case TCP::Message::E_State:
 		strPrint += "E_State";
+		break;
+	case TCP::Message::E_GameEnd:
+		strPrint += "E_GameEnd";
 		break;
 	}
 	DebugMessageManager::PrintDebugMesasge(strPrint.c_str());
@@ -188,6 +208,8 @@ bool TCPManager::AcceptTCPSocket()
 			TCP::Message::S_Accept sData{};
 			sData.pSocket = newClient;
 			sData.pAddess = newRemoteip;
+			m_pInstance->m_sData.nMessageSize = sData.sData.nMessageSize;
+			m_pInstance->m_sData.nMessageType = sData.sData.nMessageType;
 			NetworkManager::RunObject(Network::Protocol::E_TCP, 0, sData.sData.nMessageType, &sData, sData.sData.nMessageSize);
 		}
 		else
@@ -226,7 +248,7 @@ bool TCPManager::RecvMessage(TCPsocket& pSocekt, void* pMessage, int nLen)
 void TCPManager::CloseSocket(TCPsocket& pSocket)
 {
 	if (!pSocket)
-		return; 
+		return;
 	SDLNet_TCP_DelSocket(m_SocketSet, pSocket);
 	SDLNet_TCP_Close(pSocket);
 	pSocket = nullptr;

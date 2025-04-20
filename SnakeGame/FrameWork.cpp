@@ -13,6 +13,7 @@
 #include "GameServer.h"
 #include "GameScene.h"
 #include "GameStartScene.h"
+#include "GameInstance.h"
 
 FrameWork* FrameWork::m_pInstance = nullptr;
 
@@ -34,10 +35,7 @@ void FrameWork::CreateInstance()
 	TextManager::CreateInstance();
 	SoundManager::CreateInstance();
 	NetworkManager::CreateInstance();
-
-	//MultiThreadManager::CreateInstance();
-	//MultiThreadManager::CreateArray(10);
-	//MultiThreadManager::DestroyInstance();
+	GameInstance::CreateInstance();
 
 	bool bServer{};
 	bServer = false;
@@ -48,13 +46,11 @@ void FrameWork::CreateInstance()
 		m_pInstance->ChangeScene(Framework::Scene::E_SnakeServer);
 		m_pInstance->SetUpdatetick(1);
 		RenderManager::SetRendering(false);
-		m_pInstance->m_bUpdate = true;
 	}
 	else
 	{
-		m_pInstance->m_bUpdate = false;
 		CreateWindow("Snake Game 2D", { 1700,830 });
-		m_pInstance->ChangeScene(Framework::Scene::E_SnakeGame);
+		m_pInstance->ChangeScene(Framework::Scene::E_Title);
 		m_pInstance->SetUpdatetick(33);
 	}
 }
@@ -70,6 +66,7 @@ void FrameWork::DestroyInstance()
 		m_pInstance->m_pMainScene = nullptr;
 	}
 
+	GameInstance::DestroyInstance();
 	NetworkManager::DestroyInstance();
 	SoundManager::DestroyInstance();
 	TextManager::DestroyInstance();
@@ -129,13 +126,10 @@ void FrameWork::Render()
 
 void FrameWork::ChangeScene(Framework::Scene::E_Type eSceneType)
 {
-	Scene*& pScene = m_pMainScene;
-	if (pScene)
-	{
-		delete pScene;
-		pScene = nullptr;
-	}
-
+	if (m_pInstance->m_eSceneType == eSceneType)
+		return;
+	Scene* pScene{};
+	m_pInstance->m_eSceneType = eSceneType;
 	switch (eSceneType)
 	{
 	case Framework::Scene::E_SnakeGame:
@@ -150,6 +144,19 @@ void FrameWork::ChangeScene(Framework::Scene::E_Type eSceneType)
 	default:
 		break;
 	}
+	if (!pScene)
+	{
+		m_pInstance->m_bRunning = false;
+		return;
+	}
+
+	if (m_pInstance->m_pMainScene)
+	{
+		delete m_pInstance->m_pMainScene;
+		m_pInstance->m_pMainScene = nullptr;
+	}
+	m_pInstance->m_pMainScene = pScene;
+	FrameWork::SetRset(true);
 }
 
 bool FrameWork::TickUpdate()

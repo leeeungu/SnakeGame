@@ -98,7 +98,7 @@ bool C_ABlock::OverlapEvent(C_Actor* pActor)
 void C_ABlock::Reset()
 {
 	using namespace Sprite::Block;
-	SetSpriteIndex(Sprite::Block::E_None);
+	SetSpriteIndex_Map(Sprite::Block::E_None);
 	Actor::E_RenderLayer eLayer = Actor::E_RenderLayer::E_Map;
 	if (m_nSpriteIndex != E_SpriteID::E_None)
 		eLayer = Actor::E_RenderLayer::E_Actor;

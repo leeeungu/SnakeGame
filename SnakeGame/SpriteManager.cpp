@@ -9,10 +9,29 @@ void SpriteManager::CreateInstance() {
 	m_pInstance = new SpriteManager();
 	//instance_->bDebug = false;
 	using namespace Sprite;
-	m_pInstance->m_arSpriteIndex[E_SpriteType::E_Block] = Block::E_EnumMax;
-	m_pInstance->m_arSpriteIndex[E_SpriteType::E_Background] = Background::E_EnumMax;
-	m_pInstance->m_arSprite[E_SpriteType::E_Block] = m_pInstance->m_arSnake;
-	m_pInstance->m_arSprite[E_SpriteType::E_Background] = m_pInstance->m_arTexture;
+	m_pInstance->m_arSpriteIndex[E_SpriteType::E_Block]			= Block::E_EnumMax;
+	m_pInstance->m_arSpriteIndex[E_SpriteType::E_Background]	= 2;
+	m_pInstance->m_arSpriteIndex[E_SpriteType::E_GameOver]		= 2;
+	m_pInstance->m_arSpriteIndex[E_SpriteType::E_GaemStart]		= 2;
+	m_pInstance->m_arSpriteIndex[E_SpriteType::E_Title]			= 2;
+	m_pInstance->m_arSpriteIndex[E_SpriteType::E_Spinner]		= 2;
+	m_pInstance->m_arSpriteIndex[E_SpriteType::E_Matching]		= 2;
+	m_pInstance->m_arSpriteIndex[E_SpriteType::E_PressEnter]	= 2;
+	m_pInstance->m_arSpriteIndex[E_SpriteType::E_CountDown3]	= 2;
+	m_pInstance->m_arSpriteIndex[E_SpriteType::E_CountDown2]	= 2;
+	m_pInstance->m_arSpriteIndex[E_SpriteType::E_CountDown1]	= 2;
+
+	m_pInstance->m_arSprite[E_SpriteType::E_Block]			= m_pInstance->m_arSnake;
+	m_pInstance->m_arSprite[E_SpriteType::E_Background]		= &m_pInstance->m_arTexture[E_SpriteType::E_Background][0];
+	m_pInstance->m_arSprite[E_SpriteType::E_GameOver]		= &m_pInstance->m_arTexture[E_SpriteType::E_GameOver][0];
+	m_pInstance->m_arSprite[E_SpriteType::E_GaemStart]		= &m_pInstance->m_arTexture[E_SpriteType::E_GaemStart][0];
+	m_pInstance->m_arSprite[E_SpriteType::E_Title]			= &m_pInstance->m_arTexture[E_SpriteType::E_Title][0];
+	m_pInstance->m_arSprite[E_SpriteType::E_Spinner]		= &m_pInstance->m_arTexture[E_SpriteType::E_Spinner][0];
+	m_pInstance->m_arSprite[E_SpriteType::E_Matching]		= &m_pInstance->m_arTexture[E_SpriteType::E_Matching][0];
+	m_pInstance->m_arSprite[E_SpriteType::E_PressEnter]		= &m_pInstance->m_arTexture[E_SpriteType::E_PressEnter][0];
+	m_pInstance->m_arSprite[E_SpriteType::E_CountDown3]		= &m_pInstance->m_arTexture[E_SpriteType::E_CountDown3][0];
+	m_pInstance->m_arSprite[E_SpriteType::E_CountDown2]		= &m_pInstance->m_arTexture[E_SpriteType::E_CountDown2][0];
+	m_pInstance->m_arSprite[E_SpriteType::E_CountDown1]		= &m_pInstance->m_arTexture[E_SpriteType::E_CountDown1][0];
 }
 
 void SpriteManager::DestroyInstance() {
@@ -85,8 +104,17 @@ std::string SpriteManager::GetImageFile(Sprite::E_SpriteType eSpriteType)
 	using namespace Sprite;
 	using namespace std;
 	string arData[E_SpriteType::E_EnumMax]{};
-	arData[E_SpriteType::E_Block] = "Snake.png";
-	arData[E_SpriteType::E_Background] = "SnakeGameTitle.png";
+	arData[E_SpriteType::E_Block]		= "Snake.png";
+	arData[E_SpriteType::E_Background]	= "BackgroundGrid.png";
+	arData[E_SpriteType::E_GameOver]	= "GameOver.png";
+	arData[E_SpriteType::E_GaemStart]	= "Start.png";
+	arData[E_SpriteType::E_Title]		= "Title.png";
+	arData[E_SpriteType::E_Spinner]		= "MatchingSpinner.png";
+	arData[E_SpriteType::E_Matching]	= "Matching.png";
+	arData[E_SpriteType::E_PressEnter]	= "PressEnter.png";
+	arData[E_SpriteType::E_CountDown3]	= "Countdown3.png";
+	arData[E_SpriteType::E_CountDown2]	= "Countdown2.png";
+	arData[E_SpriteType::E_CountDown1]	= "Countdown1.png";
 	return arData[eSpriteType];
 }
 
@@ -111,6 +139,33 @@ void SpriteManager::GetSourceRect(Sprite::E_SpriteType eSpriteType, std::vector<
 		break;
 	case Sprite::E_Background:
 		arResult = { SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ 0, 0, 1700, 830} };
+		break;
+	case Sprite::E_GameOver:
+		arResult = { SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ 0, 0, 800, 300} };
+		break;
+	case Sprite::E_GaemStart:
+		arResult = { SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ 0, 0, 800, 300} };
+		break;
+	case Sprite::E_Title:
+		arResult = { SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ 0, 0, 800, 300} };
+		break;
+	case Sprite::E_Spinner:
+		arResult = { SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ 0, 0, 300, 300} };
+		break;
+	case Sprite::E_Matching:
+		arResult = { SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ 0, 0, 800, 300} };
+		break;
+	case Sprite::E_PressEnter:
+		arResult = { SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ 0, 0, 800, 300} };
+		break;
+	case Sprite::E_CountDown3:
+		arResult = { SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ 0, 0, 75, 110} };
+		break;
+	case Sprite::E_CountDown2:
+		arResult = { SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ 0, 0, 75, 110} };
+		break;
+	case Sprite::E_CountDown1:
+		arResult = { SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ 0, 0, 75, 110} };
 		break;
 	}
 }

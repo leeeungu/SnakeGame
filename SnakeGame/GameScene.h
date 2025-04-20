@@ -9,14 +9,9 @@ class GameScene : public Scene
 		E_None,
 		E_GameState,
 		E_Map,
-		E_Map2,
+		E_Opponent,
 		E_Snake,
 		E_AppleSpawner,
-		E_UI,
-		E_UIScore,
-		E_UIBodySize,
-		E_UILevel,
-		E_Client,
 		E_EnumMax
 	};
 public:

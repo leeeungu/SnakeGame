@@ -7,7 +7,6 @@ class GameServer : public Scene
 	enum E_Actors
 	{
 		E_None,
-		E_Server,
 		E_EnumMax
 	};
 public:

@@ -16,7 +16,7 @@ void SoundManager::CreateInstance()
 
 	{
 		using namespace Sound::Music;
-		E_DataID ID{};
+		E_DataID ID = (E_DataID)(E_DataID::E_None + 1);
 		while (ID != E_DataID::E_EnumMax)
 		{
 			m_pInstance->LoadMusic(ID);
@@ -87,8 +87,10 @@ std::string SoundManager::GetMusicName(Sound::Music::E_DataID eMusicID)
 {
 	using namespace Sound::Music;
 	std::string arData[E_DataID::E_EnumMax]{};
-	arData[E_GameOver] = "GameOver.mp3";
 	arData[E_Background] = "BackgroundMusic.mp3";
+	arData[	E_Title] = "TitleBGM.mp3";
+	arData[	E_Win] = "WinBGM.mp3";
+	arData[E_Lose] = "LoseBGM.mp3";
 	return arData[eMusicID];
 }
 
@@ -132,15 +134,16 @@ void SoundManager::PlayChannel(Sound::Chunk::Apple::E_DataID eChunkID, int loops
 void SoundManager::FadeInMusic(Sound::Music::E_DataID eMusicID, int loops, int ms)
 {
 	Mix_Music*& music = m_pInstance->m_arMusic[eMusicID];
-	if (m_pInstance->m_pMainMusic == music || music == nullptr)
+	if (m_pInstance->m_eMainMusic == eMusicID || music == nullptr)
 		return;
-	m_pInstance->m_pMainMusic = music;
+	m_pInstance->m_eMainMusic = eMusicID;
+	FadeOutMusic(1);
 	Mix_VolumeMusic(m_pInstance->m_nMusicVolume);
 	Mix_FadeInMusic(music, loops, ms);
 }
 
 // ¹è°æ À½¾Ç off
 void SoundManager::FadeOutMusic(int ms) {
-	m_pInstance->m_pMainMusic = nullptr;
+	m_pInstance->m_eMainMusic = Sound::Music::E_DataID::E_None;
 	Mix_FadeOutMusic(ms);
 }

@@ -11,15 +11,9 @@ C_AOpponent::C_AOpponent()
 	m_pOpponentMap->SetRegisterRender(true);
 	m_pOpponentMap->SetMapPosition({ Map::E_RectSize * Map::E_MapSize + 25, 30.f });
 
-	C_AText* pText{};
-	pText = new C_AText{ E_FontID::E_cutetat , 30, {Map::E_RectSize * Map::E_MapSize + 25 + 100,0} };
-	m_pText[E_Score] = pText;
-
-	pText = new C_AText{ E_FontID::E_cutetat , 30, {Map::E_RectSize * Map::E_MapSize + 25 + 500,0} };
-	m_pText[E_Speed] = pText;
-
-	pText = new C_AText{ E_FontID::E_cutetat , 30, {Map::E_RectSize * Map::E_MapSize + 25 + 300,0} };
-	m_pText[E_Length] = pText;
+	m_pText[E_Score] = new C_AText{ E_FontID::E_cutetat , 30, {Map::E_RectSize * Map::E_MapSize + 25 + 100,0} };
+	m_pText[E_Length] = new C_AText{ E_FontID::E_cutetat , 30, {Map::E_RectSize * Map::E_MapSize + 25 + 300,0} };
+	m_pText[E_Speed] = new C_AText{ E_FontID::E_cutetat , 30, {Map::E_RectSize * Map::E_MapSize + 25 + 500,0} };
 
 	SetCanReset(false);
 	SetRegisterRender(true);

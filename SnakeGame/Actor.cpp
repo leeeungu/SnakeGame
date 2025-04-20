@@ -1,5 +1,6 @@
 #include "Actor.h"
 #include "ActorManager.h"
+#include "WindowManager.h"
 
 C_Actor::C_Actor() :
 	C_Object{}, m_eRenderLayer{}, m_pSDLSurface {}, m_sSourceRect{}, m_sRenderRect{}
@@ -35,6 +36,14 @@ C_Actor** C_Actor::GetEventActor_Internal(int nIndex)
 	return ppActor;
 }
 
+void C_Actor::CalculCenterPosition()
+{
+	SDL_Point sSize{};
+	WindowManager::GetWindowSize(sSize);
+	m_sRenderRect.x = sSize.x / 2 - m_sRenderRect.w / 2;
+	m_sRenderRect.y = sSize.y / 2 - m_sRenderRect.h / 2;
+}
+
 bool C_Actor::OverlapEventActor(C_Actor* pActor)
 {
 	return OverlapEvent(pActor);
@@ -46,6 +55,12 @@ void C_Actor::SetRenderPosition(const SDL_FPoint& sValue)
 	m_sRenderRect.y = sValue.y;
 }
 
+void C_Actor::GetRenderPosition(SDL_FPoint& sValue)
+{
+	sValue.x = m_sRenderRect.x;
+	sValue.y = m_sRenderRect.y;
+}
+
 void C_Actor::SetRenderRector(const SDL_FRect& sPositionRect)
 {
 	m_sRenderRect = sPositionRect;
@@ -55,6 +70,10 @@ void C_Actor::SetRenderSize(const SDL_FPoint& sValue)
 {
 	m_sRenderRect.w = sValue.x;
 	m_sRenderRect.h = sValue.y;
+	if (m_bRenderCenter)
+	{
+		CalculCenterPosition();
+	}
 }
 
 void C_Actor::SetSourcePosition(const SDL_Rect& sPositionRect)
@@ -80,11 +99,25 @@ void C_Actor::SetRegisterRender(bool bValue)
 	ActorManager::RegisterActor(this);
 }
 
-void C_Actor::SetEventActor(C_Actor* pActor, int nIndex)
+bool C_Actor::SetEventActor(C_Actor* pActor, int nIndex)
 {
 	C_Actor** ppActor = GetEventActor_Internal(nIndex);
-	if (ppActor)
+	if (ppActor && *ppActor == nullptr)
+	{
 		*ppActor = pActor;
+		DelegateEventActor(nIndex);
+		return true;
+	}
+	return false;
+}
+
+void C_Actor::SetRenderCenter(bool bValue)
+{
+	m_bRenderCenter = bValue;
+	if (m_bRenderCenter)
+	{
+		CalculCenterPosition();
+	}
 }
 
 C_Actor* C_Actor::GetEventActor(int nIndex)
@@ -135,6 +168,6 @@ void C_Actor::InitObject()
 void C_Actor::Render()
 {
 	SDL_Texture* pTexture = RenderManager::GetTexture(m_pSDLSurface);
-	if (pTexture )
-		RenderManager::RenderTexture(pTexture, &m_sSourceRect, &m_sRenderRect);
+	if (pTexture)
+		RenderManager::RenderTexture(pTexture, &m_sSourceRect, &m_sRenderRect, m_dAngle, nullptr, m_eRenderFlip);
 }

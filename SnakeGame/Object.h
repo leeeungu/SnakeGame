@@ -17,7 +17,7 @@ __interface I_Object
 	void Reset();
 	void HandleEvent();
 
-	bool RecvTCPMessage(int nMessageType, void* pMessage, int nMessageLength);
+	bool RecvTCPMessage(void* pMessage);
 	bool RecvUDPMessage(void* pMessage, int nMessageLength);
 
 	// virtual void BeginPlay() override;
@@ -79,6 +79,6 @@ protected:
 	virtual void Update(Uint32 fDeltaTick) override {};
 	virtual void EndPlay() override {};
 	virtual void Reset() override {};
-	virtual bool RecvTCPMessage(int nMessageType, void* pMessage, int nMessageLength)  override { return false;};
+	virtual bool RecvTCPMessage(void* pMessage)  override { return false;};
 	virtual bool RecvUDPMessage(void* pMessage, int nMessageLength)  override { return false;};
 };

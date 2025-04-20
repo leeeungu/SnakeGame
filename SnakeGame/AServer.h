@@ -1,19 +1,24 @@
 #pragma once
 
 #include "NetworkManager.h"
-#include "Object.h"
+#include "Actor.h"
 
 class C_OClient;
 
 
-class C_OServer : public C_Object
+class C_AServer : public C_Actor
 {
+private:
+	enum  E_MatchingCount
+	{
+		E_Count = 2
+	};
 public:
-	C_OServer();
-	~C_OServer();
+	C_AServer();
+	~C_AServer();
 
 protected:
-	virtual bool RecvTCPMessage(int nMessageType, void* pMessage, int nMessageLength)  override;
+	virtual bool RecvTCPMessage(void* pMessage)  override;
 	virtual bool RecvUDPMessage(void* pMessage, int nMessageLength)  override;
 
 	Network::Host::S_Host* GetEmpthySocket();
@@ -22,6 +27,9 @@ protected:
 private:
 	Network::Server::S_Server m_sServer;
 	Network::Client::S_Client m_sClients[Network::Client::E_Size];
+
+	Network::Client::S_Client* m_sMatching[E_MatchingCount::E_Count];
+	int m_nMatchingCount;
 	Network::Client::S_Client m_sDummy;
 	int m_nIndex;
 };

@@ -2,9 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="GameScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="SpriteManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
@@ -77,12 +74,6 @@
     <ClCompile Include="OWindow.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="OServer.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="OClient.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
     <ClCompile Include="DebugMessageManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
@@ -97,6 +88,21 @@
     </ClCompile>
     <ClCompile Include="AOpponent.cpp">
       <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="ASnakeTitleState.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInstance.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="AClient.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="AServer.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -175,12 +181,6 @@
     <ClInclude Include="OWindow.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="OServer.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="OClient.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="DebugMessageManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
@@ -194,6 +194,18 @@
       <Filter>Actor</Filter>
     </ClInclude>
     <ClInclude Include="AOpponent.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="ASnakeTitleState.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInstance.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="AServer.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="AClient.h">
       <Filter>Actor</Filter>
     </ClInclude>
   </ItemGroup>

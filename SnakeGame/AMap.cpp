@@ -2,7 +2,7 @@
 #include "SpriteManager.h"
 #include "UDPManager.h"
 #include "ActorManager.h"
-#include "OClient.h"
+#include "AClient.h"
 
 C_AMap::C_AMap()
 {
@@ -94,7 +94,7 @@ void C_AMap::SendAll()
     }
 }
 
-void C_AMap::Reset()
+void C_AMap::ResetMap()
 {
     using namespace Map;
     using namespace Sprite::Block;
@@ -107,6 +107,11 @@ void C_AMap::Reset()
                 pActor->Reset();
         }
     }
+}
+
+void C_AMap::Reset()
+{
+    ResetMap();
 }
 
 bool C_AMap::RecvUDPMessage(void* pMessage, int nMessageLength)

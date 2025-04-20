@@ -1,27 +1,34 @@
-#include "OClient.h"
+#include "AClient.h"
 #include "NetworkManager.h"
 #include "UDPManager.h"
 #include "TCPManager.h"
 #include "AOpponent.h"
 #include "FrameWork.h"
 #include "DebugMessageManager.h"
+#include "ASnakeGameState.h"
 
-C_OClient::C_OClient()
+C_AClient ::C_AClient ()
 {
+	CreateEventActorArray(E_EnumMax);
 	NetworkManager::SetClient(&m_sClient, this);
 }
 
-C_OClient::~C_OClient()
+C_AClient ::~C_AClient ()
 {
 	using namespace TCP::Message;
 	S_LogOut sLogOut{};
 	sLogOut.sData.nMessageID = m_sClient.nClientID;
 	TCPManager::TCPSendMessage(m_sClient, &sLogOut);
-	UDPManager::Close_UDP(&m_sClient);
-	TCPManager::Close_TCP(&m_sClient);
+	NetworkManager::Close_Client(&m_sClient, this);
 }
 
-bool C_OClient::RecvTCPMessage(int nMessageType, void* pMessage, int nMessageLength)
+void C_AClient::DelegateEventActor(int nIndex)
+{
+	m_pOpponent = (C_AOpponent*)GetEventActor(E_AOpponent);
+	m_pGameState = (C_ASnakeGameState*)GetEventActor(E_AGameState);
+}
+
+bool C_AClient ::RecvTCPMessage(void* pMessage)
 {
 	using namespace TCP::Message;
 	Network::Client::S_Client* pClient = &m_sClient;
@@ -29,39 +36,45 @@ bool C_OClient::RecvTCPMessage(int nMessageType, void* pMessage, int nMessageLen
 	int nDataSize = sData.nMessageSize;
 	memcpy(&sData, pMessage, sData.nMessageSize);
 
-	if (nMessageType == E_LOGIN)
+	if (sData.nMessageType == E_LOGIN)
 	{
-		S_LogIn sLogin{};
-		TCPManager::RecvSocketMessage(&sLogin, sLogin.sData.nMessageSize);
-		m_sClient.nClientID = sLogin.sData.nMessageID;
+		S_LogIn sState{};
+		TCPManager::RecvSocketMessage(&sState, sState.sData.nMessageSize);
+		m_sClient.nClientID = sData.nMessageID;
 	}
-	else if (nMessageType == E_Matching)
+	else if (sData.nMessageType == E_Matching)
 	{
 		S_Matching sMatching{};
-		memcpy(&sMatching, pMessage, nMessageLength);
+		TCPManager::RecvSocketMessage(&sMatching, sMatching.sData.nMessageSize);
 		m_bMatching = true;
 		if (m_bMatching)
 		{
+			using namespace::Framework::Scene;
+			FrameWork::ChangeScene(E_Type::E_SnakeGame);
 			FrameWork::SetUpdate(true);
 			if (m_pOpponent)
 				m_pOpponent->SendAll();
 		}
 	}
-	else if (nMessageType == E_LOGOUT)
+	else if (sData.nMessageType == E_LOGOUT)
 	{
 		FrameWork::SetRunning(false);
 	}
-	else if (nMessageType == E_State)
+	else if (sData.nMessageType == E_State)
 	{
 		S_State sState{};
 		TCPManager::RecvSocketMessage(&sState, sState.sData.nMessageSize);
 		if (m_pOpponent)
 			m_pOpponent->SetState(sState.m_nSpeed, sState.m_nScore, sState.m_nLength);
+		//if (m_pGameState && sState.m_bGameEnd)
+		//{
+		//	m_pGameState->GameEnd();
+		//}
 	}
 	return true;
 }
 
-bool C_OClient::RecvUDPMessage(void* pMessage, int nMessageLength)
+bool C_AClient ::RecvUDPMessage(void* pMessage, int nMessageLength)
 {
 	if (!m_pOpponent)
 		return false;

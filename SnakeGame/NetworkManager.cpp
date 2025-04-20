@@ -18,6 +18,7 @@ void NetworkManager::CreateInstance()
 	UDPManager::CreateInstance();
 	m_pInstance->SetServerIPPort();
 	m_pInstance->CreateEventArray(Network::Message::Snake::E_EnumMax);
+	
 }
 
 void NetworkManager::DestroyInstance()
@@ -57,7 +58,7 @@ void NetworkManager::SetServerObject(Network::Protocol::E_ProtocolType eSocketTy
 
 void NetworkManager::SetRecvObject(Network::Protocol::E_ProtocolType eSocketType,  C_Object* pObject, int nIndex)
 {
-	if (m_pInstance->m_nObjectSize > nIndex && nIndex >= 0)
+	if (m_pInstance->m_nObjectSize > nIndex && nIndex >= 0 && m_pInstance->m_arRecvObject[eSocketType][nIndex] != pObject)
 	{
 		m_pInstance->m_arRecvObject[eSocketType][nIndex] = pObject;
 	}
@@ -88,6 +89,23 @@ void NetworkManager::SetClient(Network::Client::S_Client* pSrc, C_Object* pObjec
 	SetRecvObject(Network::Protocol::E_TCP, pObject);
 	TCPManager::Open_Client(pSrc);
 	UDPManager::Open_Client(pSrc);
+}
+
+void NetworkManager::Close_Server(Network::Server::S_Server* pSrc, C_Object* pObject)
+{
+	SetRecvObject(Network::Protocol::E_UDP, nullptr);
+	SetRecvObject(Network::Protocol::E_TCP, nullptr);
+	UDPManager::Close_UDP(pSrc);
+	TCPManager::Close_TCP(pSrc);
+}
+
+void NetworkManager::Close_Client(Network::Client::S_Client* pSrc, C_Object* pObject)
+{
+	m_pInstance->m_pClient = nullptr;
+	SetRecvObject(Network::Protocol::E_UDP, nullptr);
+	SetRecvObject(Network::Protocol::E_TCP, nullptr);
+	UDPManager::Close_UDP(pSrc);
+	TCPManager::Close_TCP(pSrc);
 }
 
 bool NetworkManager::SendMessage_2Server(Network::Protocol::E_ProtocolType eSocketType, void* pMessage, int nMessageLength)

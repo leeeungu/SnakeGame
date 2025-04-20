@@ -9,8 +9,11 @@ namespace Sound
 	{
 		enum E_DataID
 		{
-			E_GameOver,
+			E_None,
 			E_Background,
+			E_Title,
+			E_Win,
+			E_Lose,
 			E_EnumMax
 		};
 	}
@@ -34,7 +37,7 @@ namespace Sound
 class SoundManager
 {
 private:
-	SoundManager() {};
+	SoundManager() = default;
 	static SoundManager* m_pInstance;
 
 public:
@@ -66,7 +69,7 @@ public:
 
 	// Mix_Music* GetMisic(std::string texture_id) { return music_map_[texture_id]; }
 private:
-	Mix_Music* m_pMainMusic;
+	Sound::Music::E_DataID m_eMainMusic;
 	Mix_Music* m_arMusic[Sound::Music::E_DataID::E_EnumMax];
 	Mix_Chunk* m_archunk[Sound::Chunk::Apple::E_DataID::E_EnumMax];
 

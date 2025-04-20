@@ -18,6 +18,7 @@ namespace TCP
 			E_LOGOUT,
 			E_Matching,
 			E_State,
+			E_GameEnd,
 			E_EnumMax
 		};
 		struct S_Data
@@ -49,34 +50,37 @@ namespace TCP
 		struct S_LogIn
 		{
 			S_LogIn()
-				: sData{}
+				: sData{}, nDummy{}
 			{
 				sData.nMessageSize = sizeof(S_LogIn);
 				sData.nMessageType = E_Message::E_LOGIN;
 			}
 			S_Data sData;
+			int nDummy;
 		};
 
 		struct S_LogOut
 		{
 			S_LogOut()
-				: sData{}
+				: sData{}, nDummy{}
 			{
 				sData.nMessageSize = sizeof(S_LogOut);
 				sData.nMessageType = E_Message::E_LOGOUT;
 			}
 			S_Data sData;
+			int nDummy;
 		};
 
 		struct S_Matching
 		{
 			S_Matching()
-				: sData{}
+				: sData{}, bMatchingID{}
 			{
 				sData.nMessageSize = sizeof(S_Matching);
 				sData.nMessageType = E_Message::E_Matching;
 			}
 			S_Data sData;
+			int bMatchingID;
 		};
 
 		struct S_State
@@ -91,7 +95,18 @@ namespace TCP
 			int m_nSpeed;
 			int m_nScore;
 			int m_nLength;
+		};
 
+		struct S_GameEnd
+		{
+			S_GameEnd()
+				: sData{}, m_bGaemResult{}
+			{
+				sData.nMessageSize = sizeof(S_GameEnd);
+				sData.nMessageType = E_Message::E_GameEnd;
+			}
+			S_Data sData;
+			bool m_bGaemResult;
 		};
 		//struct S_
 	}
@@ -119,10 +134,11 @@ public:
 	static void AddSocketSet(Network::Host::S_Host* pHost);
 	
 
-	static void GetRecvMessage(void* pRecvMessage);
 	static TCP::Message::E_Message GetMessageType() { return m_pInstance->m_sData.nMessageType; }
+	static bool GetRecvMessage(void* ppResult);
 	static int GetMessageSize() { return m_pInstance->m_sData.nMessageSize; }
 	static int GetMessageID() { return m_pInstance->m_sData.nMessageID; }
+	static int RecvData(TCPsocket& pSocket);
 private:
 	bool Open_TCP(Network::Host::S_Host* pSrc, const char* strHost, Uint16 nPortNum);
 	bool AcceptTCPSocket();

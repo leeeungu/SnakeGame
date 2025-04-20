@@ -1,57 +1,37 @@
 #include "GameScene.h"
-#include "AText.h"
-#include "SoundManager.h"
-#include "AMap.h"
-#include "ASnake.h"
-#include "ASnakeGameState.h"
-#include "AAppleSpawner.h"
 #include "OWindow.h"
-#include "TCPManager.h"
-#include "OClient.h"
+#include "ASnakeGameState.h"
+#include "AMap.h"
+#include "AAppleSpawner.h"
+#include "ASnake.h"
+#include "AClient.h"
 #include "AOpponent.h"
+#include "GameInstance.h"
+#include "ATexture.h"
 
 GameScene::GameScene()
 {
 	CreateActorsArray(E_EnumMax);
 	SetSceneObject(E_None, new C_OWindow{});
-	C_OClient* pClient = new C_OClient{};
-	SetSceneObject(E_Client, pClient);
 	C_ASnakeGameState* pGame = new C_ASnakeGameState{};
-	{
-		SetSceneObject(E_GameState, pGame);
-	}
-	{  // text
-		using namespace FontData;
-		C_AText* pText{};
-		pText = new C_AText{ E_FontID::E_cutetat , 100, {250,400 } };
-		SetSceneObject(E_UI, pText);
-		pText->SetColor({ 255,0,0 });
-		pGame->SetEventActor(pText, C_ASnakeGameState::E_UI);
-
-		pText = new C_AText{ E_FontID::E_cutetat , 30, {100,0} };
-		SetSceneObject(E_UIScore, pText);
-		pGame->SetEventActor(pText, C_ASnakeGameState::E_UIScore);
-
-		pText = new C_AText{ E_FontID::E_cutetat , 30, {500,0} };
-		SetSceneObject(E_UIBodySize, pText);
-		pGame->SetEventActor(pText, C_ASnakeGameState::E_UILevel);
-
-		pText = new C_AText{ E_FontID::E_cutetat , 30, {300,0} };
-		SetSceneObject(E_UILevel, pText);
-		pGame->SetEventActor(pText, C_ASnakeGameState::E_UIBodySize);
-	}
+	SetSceneObject(E_GameState, pGame);
 	{ 
 		C_AOpponent* pOpponent = new C_AOpponent{};
-		SetSceneObject(E_Map2, pOpponent);
-		pClient->SetMap(pOpponent);
-
+		SetSceneObject(E_Opponent, pOpponent);
+		C_AClient* pClient = (C_AClient*)GameInstance::GetObject(GameInstance::E_Client);
+		if (pClient)
+			pClient->SetEventActor(pOpponent, C_AClient::E_EventActor::E_AOpponent);
+		if (pClient)
+			pClient->SetEventActor(pGame, C_AClient::E_EventActor::E_AGameState);
 		C_AMap* pMap = new C_AMap{};
 		SetSceneObject(E_Map, pMap);
 		pMap->SetRegisterRender(true);
+		pGame->SetEventActor(pMap, C_ASnakeGameState::E_EventActor::E_Map);
+
 		C_AAppleSpawner* pSpawner = new C_AAppleSpawner{};
 		SetSceneObject(E_AppleSpawner, pSpawner);
 		pSpawner->SetEventActor(pMap, C_AAppleSpawner::E_EventActor::E_Map);
-		//pGame->SetEventActor(pSpawner, C_ASnakeGameState::E_EventActor::E_Spawner);
+		pGame->SetEventActor(pSpawner, C_ASnakeGameState::E_EventActor::E_Spawner);
 
 		C_ASnake* pSnake = new C_ASnake{};
 		SetSceneObject(E_Snake, pSnake);
@@ -63,5 +43,4 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
-	SoundManager::FadeOutMusic(0);
 }

@@ -49,6 +49,12 @@ SDL_Window* WindowManager::GetWindow(int& nIndex)
 	return pWindow;
 }
 
+void WindowManager::GetWindowSize(SDL_Point& sWindowSize, int nWindowIndex)
+{
+	sWindowSize.x = m_pInstance->m_arWindow[nWindowIndex].sSize.x;
+	sWindowSize.y = m_pInstance->m_arWindow[nWindowIndex].sSize.y;
+}
+
 void WindowManager::CreateWindow(const char* strWindwoName, S_Window* pWindow)
 {
 	pWindow->pWindow = SDL_CreateWindow(strWindwoName, pWindow->sPosition.x, pWindow->sPosition.y, pWindow->sSize.x, pWindow->sSize.y, 0);

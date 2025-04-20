@@ -60,8 +60,8 @@ void C_Object::HandleEventObject()
 bool C_Object::RecvObject(Network::Protocol::E_ProtocolType eSocketType,int nMessageType, void* pMessage, int nMessageLength)
 {
 	if (eSocketType == Network::Protocol::E_ProtocolType::E_TCP)
-		RecvTCPMessage(nMessageType, pMessage, nMessageLength);
-	else
+		return RecvTCPMessage(pMessage);
+	if (eSocketType == Network::Protocol::E_ProtocolType::E_UDP)
 		return RecvUDPMessage(pMessage, nMessageLength);
-	return true;
+	return false;
 }

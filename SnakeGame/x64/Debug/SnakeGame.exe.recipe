@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\x64\Debug\SnakeGame.exe</FullPath>
+      <FullPath>P:\source\repos\2DGame\SnakeGame\x64\Debug\SnakeGame.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

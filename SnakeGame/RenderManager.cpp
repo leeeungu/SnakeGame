@@ -24,9 +24,10 @@ void RenderManager::DestroyInstance()
 	m_pInstance = nullptr;
 }
 
-int RenderManager::RenderTexture(SDL_Texture* texture, const SDL_Rect* srcrect, const SDL_FRect* dstrect)
+int RenderManager::RenderTexture(SDL_Texture* texture, const SDL_Rect* srcrect, const SDL_FRect* dstrect, const double angle, SDL_FPoint* center, const SDL_RendererFlip flip)
 {
-	return SDL_RenderCopyF(m_pInstance->m_pRenderer, texture, srcrect, dstrect);
+	return SDL_RenderCopyExF(m_pInstance->m_pRenderer, texture, srcrect, dstrect, angle, center, flip);
+	//return SDL_RenderCopyF(m_pInstance->m_pRenderer, texture, srcrect, dstrect);
 }
 
 void RenderManager::StartRenderer()

@@ -28,6 +28,8 @@ public:
 	virtual void SetRegisterRender(bool bValue) override;
 	void RecvUDPMapMessage(void* pMessage, int nMessageLength);
 	void SendAll();
+
+	void ResetMap();
 protected:
 	virtual bool RecvUDPMessage(void* pMessage, int nMessageLength) override;
 	virtual void Reset() override;

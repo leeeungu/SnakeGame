@@ -6,7 +6,7 @@
 C_ASnake::C_ASnake()
 {
 	m_bActive = true;
-	m_bUpdate = true;
+	m_bUpdate = false;
 	m_bRender = false;
 	SetRegisterRender(false);
 	SetRegisterUpdate(true);
@@ -180,7 +180,7 @@ void C_ASnake::Reset()
 	m_pHead = nullptr;
 	m_pTail = nullptr;
 	m_bDead = false;
-	m_bUpdate = true;
+	m_bUpdate = false;
 	S_Body* pBody = GetBody();
 	pBody->sCoord = m_sCurPos;
 	pBody->pBlock = m_pMap->GetBlock(m_sCurPos);
@@ -192,8 +192,8 @@ void C_ASnake::Reset()
 	PushBody(pBody);
 	SetSprite(m_pHead);
 	SetSprite(m_pTail);
-	m_sDir = { 0,0 };
-	m_sPreDir = { 0,1 };
+	m_sDir = { 1,0 };
+	m_sPreDir = { 1,0 };
 }
 
 C_ASnake::S_Body* C_ASnake::GetBody()

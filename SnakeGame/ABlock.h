@@ -20,11 +20,6 @@ namespace Block
 class C_ABlock : public C_Actor
 {
 	friend class C_AMap;
-private:
-	unsigned int m_nSpriteIndex;
-	Block::Apple::E_TypeID m_eApple;
-	SDL_Color m_arColorMode[Block::Apple::E_TypeID::E_EnumMax];
-	SDL_Point m_nCoord;
 public:
 	C_ABlock();
 
@@ -42,4 +37,10 @@ protected:
 	virtual void Render() override;
 	virtual bool OverlapEvent(C_Actor* pActor) override;
 	virtual void Reset() override;
+
+private:
+	unsigned int m_nSpriteIndex;
+	Block::Apple::E_TypeID m_eApple;
+	SDL_Color m_arColorMode[Block::Apple::E_TypeID::E_EnumMax];
+	SDL_Point m_nCoord;
 };

@@ -11,17 +11,17 @@ namespace Sprite
 		E_None,
 		E_Block,
 		E_Background,
+		E_GameOver,
+		E_GaemStart,
+		E_Title,
+		E_Spinner,
+		E_Matching,
+		E_PressEnter,
+		E_CountDown3,
+		E_CountDown2,
+		E_CountDown1,
 		E_EnumMax
 	};
-	namespace Background
-	{
-		enum E_SpriteID
-		{
-			E_None,
-			E_Title,
-			E_EnumMax
-		};
-	}
 
 	namespace Block
 	{
@@ -74,7 +74,8 @@ private:
 private:
 	unsigned int m_arSpriteIndex[Sprite::E_SpriteType::E_EnumMax];
 	SDL_Rect* m_arSprite[Sprite::E_SpriteType::E_EnumMax];
+
 	SDL_Surface* m_arSpriteSurface[Sprite::E_SpriteType::E_EnumMax];
-	SDL_Rect m_arSnake[(int)Sprite::Block::E_SpriteID::E_EnumMax];
-	SDL_Rect m_arTexture[(int)Sprite::Background::E_SpriteID::E_EnumMax];
+	SDL_Rect m_arSnake[Sprite::Block::E_SpriteID::E_EnumMax];
+	SDL_Rect m_arTexture[Sprite::E_SpriteType::E_EnumMax][2];
 };

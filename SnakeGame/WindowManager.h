@@ -26,6 +26,7 @@ public:
 	static bool CreateWindow(const char* strWindwoName, const SDL_Point& sSize, int& nWindowIndex, const SDL_Point& sPosition = {200,100});
 	static bool DestoryWindow(int& nIndex);
 	static SDL_Window* GetWindow(int& nIndex);
+	static void GetWindowSize(SDL_Point& sWindowSize, int nWindowIndex = 0);
 private:
 	void CreateWindow(const char* strWindwoName, S_Window* pWindow);
 	int GetEmpthy();

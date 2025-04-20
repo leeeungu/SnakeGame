@@ -48,7 +48,7 @@ public:
 	static Uint32 GetDeltaTime() { return	m_pInstance->m_nDeltaTime; }
 
 public:
-	void ChangeScene(Framework::Scene::E_Type eSceneType);
+	static void ChangeScene(Framework::Scene::E_Type eSceneType);
 
 
 private:
