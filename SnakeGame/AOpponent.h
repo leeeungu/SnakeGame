@@ -13,6 +13,7 @@ private:
 		E_Score,
 		E_Speed,
 		E_Length,
+		E_ClientID,
 		E_EnumMax
 	};
 public:
@@ -20,9 +21,11 @@ public:
 	~C_AOpponent();
 
 
+	void SetOpponentID(int nID);
 	void SetState(int nSpeed, int nScore, int nLength);
 	void SetMap(void* pMessage, int nMessageLength);
 	void SendAll();
+
 private:
 	C_AMap* m_pOpponentMap;
 	C_AText* m_pText[E_EnumMax];

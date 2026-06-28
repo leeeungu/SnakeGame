@@ -83,44 +83,51 @@ void C_AMap::SendAll()
 {
     using namespace Map;
     using namespace Sprite::Block;
+    using namespace UDP::Message;
     for (int i = 0; i < E_MapData::E_MapSize; i++)
     {
         for (int j = 0; j < E_MapData::E_MapSize; j++)
         {
             C_ABlock* pActor = m_arBlockActor[i][j];
             if (pActor)
-                pActor->SendMessage();
-        }
-    }
-}
-
-void C_AMap::ResetMap()
-{
-    using namespace Map;
-    using namespace Sprite::Block;
-    for (int i = 0; i < E_MapData::E_MapSize; i++)
-    {
-        for (int j = 0; j < E_MapData::E_MapSize; j++)
-        {
-            C_ABlock* pActor = m_arBlockActor[i][j];
-            if (pActor)
-                pActor->Reset();
+            {
+                Snake::S_Map sMessage{};
+                sMessage.nX = i;
+                sMessage.nY = j;
+                sMessage.nSpriteIndex = pActor->GetSpriteIndex();
+                pActor->SendUDPMessage(&sMessage, sMessage.sData.nMessageSize);
+            }
         }
     }
 }
 
 void C_AMap::Reset()
 {
-    ResetMap();
+    using namespace Map;
+    using namespace Sprite::Block;
+    using namespace UDP::Message;
+    for (int i = 0; i < E_MapData::E_MapSize; i++)
+    {
+        for (int j = 0; j < E_MapData::E_MapSize; j++)
+        {
+            C_ABlock* pActor = m_arBlockActor[i][j];
+            if (pActor)
+            {
+                pActor->Reset();
+            }
+        }
+    }
 }
 
 bool C_AMap::RecvUDPMessage(void* pMessage, int nMessageLength)
 {
     using namespace UDP::Message;
-    Snake::S_Map* sMessage = (Snake::S_Map*)pMessage;
-    if (!sMessage)
+    Snake::S_Map sMessage{};
+    if (sMessage.sData.nMessageSize != nMessageLength)
         return false;
-    C_ABlock* pBlock = GetBlock({ sMessage->nX, sMessage->nY });
-    pBlock->RecvObject(Network::Protocol::E_UDP,0, pMessage, nMessageLength);
+    memcpy(&sMessage, pMessage, nMessageLength);
+    C_ABlock* pBlock = GetBlock({ sMessage.nX, sMessage.nY });
+    if (pBlock)
+        pBlock->RecvUDPMessage(pMessage, nMessageLength);
     return true;
 }

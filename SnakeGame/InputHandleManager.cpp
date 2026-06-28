@@ -166,6 +166,14 @@ bool InputHandleManager::UnRegisterKeyBoard(InputHandle::KeyBoard::InputType::E_
 	return UnRegisterObject(pObject, InputHandle::InputType::E_TypeID::E_KeyBoard, eInputID, eValueID);
 }
 
+int InputHandleManager::PushInputKeyBoard(SDL_EventType eEventType, SDL_KeyCode eKeyCode)
+{
+	SDL_Event sEvent{};
+	sEvent.type = eEventType;
+	sEvent.key.keysym.sym = eKeyCode;
+	return SDL_PushEvent(&sEvent);
+}
+
 bool InputHandleManager::RegisterMouse(InputHandle::Mouse::InputType::E_TypeID eInputID, InputHandle::Mouse::ValueType::E_TypeID eValueID, C_Object* pObject)
 {
 	return RegisterObject(pObject, InputHandle::InputType::E_TypeID::E_Mouse, eInputID, eValueID);
@@ -174,6 +182,14 @@ bool InputHandleManager::RegisterMouse(InputHandle::Mouse::InputType::E_TypeID e
 bool InputHandleManager::UnRegisterMouse(InputHandle::Mouse::InputType::E_TypeID eInputID, InputHandle::Mouse::ValueType::E_TypeID eValueID, C_Object* pObject)
 {
 	return UnRegisterObject(pObject, InputHandle::InputType::E_TypeID::E_Mouse, eInputID, eValueID);
+}
+
+int InputHandleManager::PushInputMouse(SDL_EventType eEventType, Uint8 nButton)
+{
+	SDL_Event sEvent{};
+	sEvent.type = eEventType;
+	sEvent.button.button = nButton;
+	return SDL_PushEvent(&sEvent);
 }
 
 bool InputHandleManager::RegisterSystem(InputHandle::System::InputType::E_TypeID eInputID, C_Object* pObject)

@@ -11,7 +11,6 @@ class GameStartScene : public Scene
 		E_Title,
 		E_Spinner,
 		E_Text,
-		E_Client,
 		E_TitleState,
 		E_EnumMax
 	};

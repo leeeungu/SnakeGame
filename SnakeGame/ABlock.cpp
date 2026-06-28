@@ -40,7 +40,15 @@ void C_ABlock::SetSpriteIndex(unsigned int nIndex)
 	m_eApple = (E_TypeID)(m_nSpriteIndex - E_RedApple + 1);
 	if (m_eApple < 0 || m_eApple >= E_TypeID::E_EnumMax)
 		m_eApple = E_TypeID::E_None;
-	SendMessage();
+
+	{
+		using namespace UDP::Message;
+		Snake::S_Map sMessage{};
+		sMessage.nX = m_nCoord.x;
+		sMessage.nY = m_nCoord.y;
+		sMessage.nSpriteIndex = m_nSpriteIndex;
+		SendUDPMessage(&sMessage, sMessage.sData.nMessageSize);
+	}
 	SpriteManager::GetSpriteSourceRect(eSpriteType, m_nSpriteIndex, m_sSourceRect);
 }
 
@@ -108,20 +116,12 @@ void C_ABlock::Reset()
 bool C_ABlock::RecvUDPMessage(void* pMessage, int nMessageLength)
 {
 	using namespace UDP::Message;
-	Snake::S_Map* sMessage = (Snake::S_Map*)pMessage;
-	if (!sMessage)
+	Snake::S_Map sMessage{};
+	if (sMessage.sData.nMessageSize != nMessageLength)
 		return false;
-	SetSpriteIndex_Map(sMessage->nSpriteIndex);
+	memcpy(&sMessage, pMessage, nMessageLength);
+	SetSpriteIndex_Map(sMessage.nSpriteIndex);
 	return true;
 }
 
-void C_ABlock::SendMessage()
-{
-	using namespace UDP::Message;
-	Snake::S_Map sMessage{};
-	sMessage.nX = m_nCoord.x;
-	sMessage.nY = m_nCoord.y;
-	sMessage.nSpriteIndex = m_nSpriteIndex;
-	NetworkManager::SendMessage_2Server(Network::Protocol::E_UDP, &sMessage, sMessage.sData.nMessageSize);
-}
 

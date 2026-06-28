@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>P:\source\repos\2DGame\SnakeGame\x64\Debug\SnakeGame.exe</FullPath>
+      <FullPath>P:\source\C++\SnakeGame\x64\Debug\SnakeGame.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

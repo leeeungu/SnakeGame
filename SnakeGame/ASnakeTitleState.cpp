@@ -28,9 +28,6 @@ void C_ASnakeTitleState::HandleEvent()
 	{
 		using namespace TCP::Message;
 		m_bMathchingStart = true;
-		S_Matching sState{};
-		NetworkManager::SendMessage_2Server(Network::Protocol::E_TCP, &sState, sState.sData.nMessageSize);
-		//FrameWork::ChangeScene(Framework::Scene::E_SnakeGame);
 		C_ATexture* pText =  (C_ATexture*)(GetEventActor(E_EventActor::E_Text));
 		if (pText)
 		{
@@ -47,5 +44,14 @@ void C_ASnakeTitleState::HandleEvent()
 			pText->SetUpdate(true);
 			pText->SetRegisterUpdate(true);
 		}
+		S_MatchingRegister sSend{};
+		Network::Client::S_Client* pClient = (Network::Client::S_Client*)TCPManager::GetHost();
+		if (pClient)
+		{
+			sSend.sData.nClientID = pClient->nClientID;
+			sSend.sUDPAddress = pClient->sUDPAddress;
+			TCPManager::SendMessage(pClient->sTCPSocket, &sSend, sSend.sData.nMessageSize);
+		}
+		//FrameWork::ChangeScene(Framework::Scene::E_SnakeGame);
 	}
 }

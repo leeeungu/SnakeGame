@@ -104,6 +104,15 @@
     <ClCompile Include="GameScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="AThreadServer.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="AMatchingThread.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="ATestPlayer.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameScene.h">
@@ -206,6 +215,15 @@
       <Filter>Actor</Filter>
     </ClInclude>
     <ClInclude Include="AClient.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="AThreadServer.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="AMatchingThread.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="ATestPlayer.h">
       <Filter>Actor</Filter>
     </ClInclude>
   </ItemGroup>

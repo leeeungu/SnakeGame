@@ -2,6 +2,7 @@
 #include "AMap.h"
 #include "AText.h"
 #include "DebugMessageManager.h"
+#include "UDPManager.h"
 
 C_AOpponent::C_AOpponent()
 {
@@ -14,9 +15,12 @@ C_AOpponent::C_AOpponent()
 	m_pText[E_Score] = new C_AText{ E_FontID::E_cutetat , 30, {Map::E_RectSize * Map::E_MapSize + 25 + 100,0} };
 	m_pText[E_Length] = new C_AText{ E_FontID::E_cutetat , 30, {Map::E_RectSize * Map::E_MapSize + 25 + 300,0} };
 	m_pText[E_Speed] = new C_AText{ E_FontID::E_cutetat , 30, {Map::E_RectSize * Map::E_MapSize + 25 + 500,0} };
+	m_pText[E_ClientID] = new C_AText{ E_FontID::E_cutetat , 30, {Map::E_RectSize * Map::E_MapSize + 25 ,0} };
 
 	SetCanReset(false);
 	SetRegisterRender(true);
+	SetUpdate(false);
+	SetRegisterUpdate(false);
 	{
 		std::string Temp = "Score : " + std::to_string(0);
 		m_pText[E_Score]->SetText(Temp.c_str());
@@ -43,6 +47,11 @@ C_AOpponent::~C_AOpponent()
 	if (m_pOpponentMap)
 		delete m_pOpponentMap;
 	m_pOpponentMap = nullptr;
+}
+
+void C_AOpponent::SetOpponentID(int nID)
+{
+	m_pText[E_ClientID]->SetText(std::to_string(nID).c_str());
 }
 
 void C_AOpponent::SetState(int nSpeed, int nScore, int nLength)

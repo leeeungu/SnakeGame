@@ -1,30 +1,38 @@
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\AAppleSpawner.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\AAppleSpawner.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\Actor.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\Actor.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\ActorManager.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\ActorManager.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\ABlock.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\ABlock.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\AServerMaps.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\AServerMaps.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\ASnake.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\ASnake.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\DebugMessageManager.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\DebugMessageManager.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\FrameWork.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\FrameWork.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\GameScene.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\GameScene.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\GameServer.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\GameServer.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\InputHandleManager.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\InputHandleManager.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\main.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\main.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\AMap.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\AMap.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\MultiThreadManager.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\MultiThreadManager.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\NetworkManager.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\NetworkManager.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\Object.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\Object.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\ObjectManager.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\ObjectManager.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\ASnakeGameState.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\ASnakeGameState.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\OClient.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\OClient.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\OServer.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\OServer.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\OWindow.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\OWindow.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\Scene.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\Scene.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\SoundManager.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\SoundManager.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\SpriteManager.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\SpriteManager.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\TCPManager.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\TCPManager.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\TextManager.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\TextManager.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\RenderManager.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\RenderManager.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\ATexture.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\ATexture.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\UDPManager.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\UDPManager.obj
-C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\WindowManager.cpp;C:\Users\skyse\OneDrive\바탕 화면\SnakeGame_Remake\SnakeGame_실행파일\SnakeGame\x64\Release\WindowManager.obj
+P:\source\C++\SnakeGame\SnakeGame\AAppleSpawner.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\AAppleSpawner.obj
+P:\source\C++\SnakeGame\SnakeGame\Actor.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\Actor.obj
+P:\source\C++\SnakeGame\SnakeGame\ActorManager.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\ActorManager.obj
+P:\source\C++\SnakeGame\SnakeGame\ABlock.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\ABlock.obj
+P:\source\C++\SnakeGame\SnakeGame\AMatchingThread.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\AMatchingThread.obj
+P:\source\C++\SnakeGame\SnakeGame\AOpponent.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\AOpponent.obj
+P:\source\C++\SnakeGame\SnakeGame\ASnake.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\ASnake.obj
+P:\source\C++\SnakeGame\SnakeGame\ASnakeTitleState.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\ASnakeTitleState.obj
+P:\source\C++\SnakeGame\SnakeGame\ATestPlayer.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\ATestPlayer.obj
+P:\source\C++\SnakeGame\SnakeGame\ATexture.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\ATexture.obj
+P:\source\C++\SnakeGame\SnakeGame\AThreadServer.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\AThreadServer.obj
+P:\source\C++\SnakeGame\SnakeGame\DebugMessageManager.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\DebugMessageManager.obj
+P:\source\C++\SnakeGame\SnakeGame\FileReader.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\FileReader.obj
+P:\source\C++\SnakeGame\SnakeGame\FrameWork.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\FrameWork.obj
+P:\source\C++\SnakeGame\SnakeGame\GameInstance.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\GameInstance.obj
+P:\source\C++\SnakeGame\SnakeGame\GameScene.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\GameScene.obj
+P:\source\C++\SnakeGame\SnakeGame\GameServer.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\GameServer.obj
+P:\source\C++\SnakeGame\SnakeGame\GameStartScene.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\GameStartScene.obj
+P:\source\C++\SnakeGame\SnakeGame\InputHandleManager.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\InputHandleManager.obj
+P:\source\C++\SnakeGame\SnakeGame\main.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\main.obj
+P:\source\C++\SnakeGame\SnakeGame\AMap.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\AMap.obj
+P:\source\C++\SnakeGame\SnakeGame\MultiThreadManager.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\MultiThreadManager.obj
+P:\source\C++\SnakeGame\SnakeGame\NetworkManager.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\NetworkManager.obj
+P:\source\C++\SnakeGame\SnakeGame\Object.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\Object.obj
+P:\source\C++\SnakeGame\SnakeGame\ObjectManager.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\ObjectManager.obj
+P:\source\C++\SnakeGame\SnakeGame\ASnakeGameState.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\ASnakeGameState.obj
+P:\source\C++\SnakeGame\SnakeGame\AClient.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\AClient.obj
+P:\source\C++\SnakeGame\SnakeGame\AServer.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\AServer.obj
+P:\source\C++\SnakeGame\SnakeGame\OWindow.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\OWindow.obj
+P:\source\C++\SnakeGame\SnakeGame\Scene.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\Scene.obj
+P:\source\C++\SnakeGame\SnakeGame\SoundManager.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\SoundManager.obj
+P:\source\C++\SnakeGame\SnakeGame\SpriteManager.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\SpriteManager.obj
+P:\source\C++\SnakeGame\SnakeGame\TCPManager.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\TCPManager.obj
+P:\source\C++\SnakeGame\SnakeGame\TextManager.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\TextManager.obj
+P:\source\C++\SnakeGame\SnakeGame\RenderManager.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\RenderManager.obj
+P:\source\C++\SnakeGame\SnakeGame\AText.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\AText.obj
+P:\source\C++\SnakeGame\SnakeGame\UDPManager.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\UDPManager.obj
+P:\source\C++\SnakeGame\SnakeGame\WindowManager.cpp;P:\source\C++\SnakeGame\SnakeGame\x64\Release\WindowManager.obj

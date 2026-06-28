@@ -38,24 +38,27 @@ C_ASnakeGameState::C_ASnakeGameState()
 	m_eTexture[1] = Sprite::E_SpriteType::E_CountDown2;
 	m_eTexture[2] = Sprite::E_SpriteType::E_CountDown1;
 	m_eTexture[3] = Sprite::E_SpriteType::E_GaemStart;
+	m_eTexture[4] = Sprite::E_SpriteType::E_YouWin;
+	m_eTexture[5] = Sprite::E_SpriteType::E_YouLose;
 	
 	{
 		using namespace FontData;
 		m_pText[GameState::SnakeUI::E_Score] = new C_AText{ E_FontID::E_cutetat , 30, {100,0} };
 		m_pText[GameState::SnakeUI::E_Length] = new C_AText{ E_FontID::E_cutetat , 30, {300,0} };
 		m_pText[GameState::SnakeUI::E_Speed] = new C_AText{ E_FontID::E_cutetat , 30, {500,0} };
+		m_pText[GameState::SnakeUI::E_ClientID] = new C_AText{ E_FontID::E_cutetat , 30, {0,0} };
 	}
 	m_pGameUI = new C_ATexture{}; 
 	m_pGameUI->SetRenderSize({ 75,110 });
 	m_pGameUI->SetRenderCenter(true);
 	m_pGameUI->SetRenderLayer(Actor::E_UI);
+	SetLevelCount(10);
 }
 
 C_ASnakeGameState::~C_ASnakeGameState()
 {
 	using namespace InputHandle::Mouse;
 	InputHandleManager::UnRegisterMouse(InputType::E_TypeID::E_MOUSEBUTTONUP, ValueType::E_TypeID::E_LEFT, this);
-
 	for (int i = 0; i < GameState::SnakeUI::E_EnumMax; i++)
 	{
 		if (m_pText[i])
@@ -78,35 +81,67 @@ void C_ASnakeGameState::SetScore(int nValue)
 	}
 }
 
-void C_ASnakeGameState::GameEnd()
+void C_ASnakeGameState::GameResult(bool bValue)
 {
+	if (m_bDead)
+		return;
+
+	SetLevelCount(10);
+	m_bCanReset = true;
+	m_bDead = true;
+	m_pSnake->SetUpdate(false);
+	m_pSpawner->SetUpdate(false);
+	if (!bValue)
+	{
+		TCP::Message::S_GameEnd sSend{};
+		sSend.bGameResult = false;
+		Network::Client::S_Client* pClient = (Network::Client::S_Client*)TCPManager::GetHost();
+		if (pClient)
+		{
+			sSend.sData.nClientID = pClient->nClientID;
+			TCPManager::SendMessage(pClient->sTCPSocket, &sSend, sSend.sData.nMessageSize);
+		}
+	}
+
+	m_pGameUI->SetRenderSize({ 600,300 });
 	m_pGameUI->SetRender(true);
 	m_pSnake->SetUpdate(false);
 	m_pSpawner->SetUpdate(false);
+	if (bValue)
+	{
+		SoundManager::FadeInMusic(Sound::Music::E_Win, 1);
+		m_pGameUI->SetTexture(m_eTexture[4], 1);
+	}
+	else
+	{
+		SoundManager::FadeInMusic(Sound::Music::E_Lose, 1);
+		m_pGameUI->SetTexture(m_eTexture[5], 1);
+	}
+}
 
-
+void C_ASnakeGameState::SetClientID(int nID)
+{
+	m_pText[GameState::SnakeUI::E_ClientID]->SetText(std::to_string(nID).c_str());
 }
 
 void C_ASnakeGameState::DelegateEventActor(int nIndex)
 {
 	m_pMap = (C_AMap*)GetEventActor(E_Map);
 	m_pSnake = (C_ASnake*)GetEventActor(E_Snake);
-	if (m_pGameUI)
-		m_pGameUI->SetTexture(m_eTexture[m_nIndex], 1);
+	m_pGameUI->SetTexture(m_eTexture[m_nIndex], 1);
 	m_pSpawner = (C_AAppleSpawner*)GetEventActor(E_Spawner);
 }
 
 void C_ASnakeGameState::Update(Uint32 fDeltaTick)
 {
 	m_nCount += fDeltaTick;
-	if (m_nCount >= 800)
+	if (m_nCount >= 800 && !m_bDead)
 	{
 		m_nIndex++;
 		m_nCount = 0;
 		if (m_nIndex < 4)
 		{
-			if (m_pGameUI)
-				m_pGameUI->SetTexture(m_eTexture[m_nIndex], 1);
+			m_pGameUI->SetTexture(m_eTexture[m_nIndex], 1);
 			if (m_nIndex == 3)
 			{
 				m_pGameUI->SetRenderSize({ 800,300 });
@@ -117,24 +152,23 @@ void C_ASnakeGameState::Update(Uint32 fDeltaTick)
 			m_pGameUI->SetRender(false);
 			m_pSnake->SetUpdate(true);
 			m_pSpawner->SetUpdate(true);
+			SetUpdate(false);
 		}
 	}
 }
 
 void C_ASnakeGameState::SendState()
 {
-	TCP::Message::S_State sState{};
-	sState.m_nSpeed = m_nSpeed;
-	sState.m_nScore = m_nScore;
-	sState.m_nLength = m_nLength;
-	NetworkManager::SendMessage_2Server(Network::Protocol::E_TCP, &sState, sState.sData.nMessageSize);
-
-	if (m_bDead)
-	{
-		TCP::Message::S_GameEnd sGame{};
-		sGame.m_bGaemResult = false;
-		NetworkManager::SendMessage_2Server(Network::Protocol::E_TCP, &sGame, sGame.sData.nMessageSize);
-	}
+	Network::Client::S_Client* pClient = (Network::Client::S_Client*)TCPManager::GetHost();
+	if (!pClient)
+		return;
+	using namespace TCP::Message;
+	S_OpponentScore sSend{};
+	sSend.nSpeed = m_nSpeed;
+	sSend.nScore = m_nScore;
+	sSend.nLength = m_nLength;
+	sSend.sData.nClientID = pClient->nClientID;
+	TCPManager::SendMessage(pClient->sTCPSocket, &sSend, sSend.sData.nMessageSize);
 }
 
 void C_ASnakeGameState::SetLevelCount(int nCount)
@@ -144,48 +178,32 @@ void C_ASnakeGameState::SetLevelCount(int nCount)
 		m_nLevelCount = 10;
 	if (m_nLevelCount % 10 == 0)
 	{
-		GameState::E_Level eLevel = (GameState::E_Level)( m_nLevelCount / 10);
+		GameState::E_Level eLevel = (GameState::E_Level)(m_nLevelCount / 10);
 		if (GameState::E_Level::E_EnumMax <= eLevel || eLevel <= GameState::E_Level::E_None)
 			return;
 		m_nSpeed = eLevel;
 		FrameWork::SetUpdatetick(m_arTicks[m_nSpeed]);
 		C_AText* pText = m_pText[GameState::SnakeUI::E_Speed];
-		if (pText)
-		{
-			std::string Temp = "Speed : " + std::to_string(m_nSpeed);
-			pText->SetText(Temp.c_str());
-		}
+		std::string Temp = "Speed : " + std::to_string(m_nSpeed);
+		pText->SetText(Temp.c_str());
 	}
 }
 
-void C_ASnakeGameState::SetDead()
-{
-	m_bCanReset = true;
-	m_bDead = true;
-	FrameWork::SetUpdatetick(m_arTicks[0]);
-	FrameWork::SetUpdate(false);
-	SoundManager::FadeOutMusic(0);
-	SoundManager::FadeInMusic(Sound::Music::E_Lose, 1);
-}
 
 void C_ASnakeGameState::SetUIBodyCount(int nCount)
 {
 	m_nLength = nCount;
 	C_AText* pText = m_pText[GameState::SnakeUI::E_Length];
-	if (pText)
-	{
-		std::string Temp = "Length : " + std::to_string(nCount);
-		pText->SetText(Temp.c_str());
-	}
+	std::string Temp = "Length : " + std::to_string(nCount);
+	pText->SetText(Temp.c_str());
 }
 
 void C_ASnakeGameState::HandleEvent()
 {
 	using namespace InputHandle::Mouse;
-	if (m_bCanReset && InputHandleManager::GetCurrentMouseValue() == ValueType::E_TypeID::E_LEFT)
+	if (m_bCanReset && InputHandleManager::GetCurrentMouseValue() == ValueType::E_TypeID::E_LEFT) 
 	{
 		FrameWork::ChangeScene(Framework::Scene::E_Title);
-		FrameWork::SetUpdate(true);
 	}
 }
 
@@ -203,28 +221,25 @@ void C_ASnakeGameState::Reset()
 
 bool C_ASnakeGameState::OverlapEvent(C_Actor* pActor)
 {	
-	C_ASnake* pSnake = dynamic_cast<C_ASnake*>(GetEventActor(E_Snake));
-	if (!pSnake)
+	if (!m_pSnake)
 		return false;
-	if (pSnake->GetAppleType() == Block::Apple::E_Blue)
+	if (m_pSnake->GetAppleType() == Block::Apple::E_Blue)
 	{
 		SetLevelCount((m_nLevelCount / 10 - 1) * 10);
 	}
 	else
 	{
-		C_AText* pText = m_pText[GameState::SnakeUI::E_Score];
-		if (pSnake->GetAppleType() == Block::Apple::E_Red)
+		if (m_pSnake->GetAppleType() == Block::Apple::E_Red)
 		{
 			SetScore(m_nScore + 10);
 			SetLevelCount(m_nLevelCount + 1);
 		}
-		SetUIBodyCount(pSnake->GetBodyCount());
+		SetUIBodyCount(m_pSnake->GetBodyCount());
 	}
-	if (pSnake->GetDead())
-	{
-		SetDead();
-	}
-
 	SendState();
+	if (m_pSnake->GetDead())
+	{
+		GameResult(false);
+	}
 	return true;
 }

@@ -7,9 +7,12 @@
 #include "ActorManager.h"
 #include "InputHandleManager.h"
 #include "WindowManager.h"
-#include "NetworkManager.h"
+#include "UDPManager.h"
+#include "TCPManager.h"
 #include "MultiThreadManager.h"
 #include "DebugMessageManager.h"
+#include "FileReader.h"
+#include <iostream>
 #include "GameServer.h"
 #include "GameScene.h"
 #include "GameStartScene.h"
@@ -22,6 +25,8 @@ void FrameWork::CreateInstance()
 	if (m_pInstance)
 		return;
 	m_pInstance = new FrameWork{};
+	SDLNet_Init();
+
 	m_pInstance->m_bReset = true;
 	m_pInstance->m_bRunning = true;
 	m_pInstance->m_bUpdate = true;
@@ -34,12 +39,24 @@ void FrameWork::CreateInstance()
 	ActorManager::CreateInstance();
 	TextManager::CreateInstance();
 	SoundManager::CreateInstance();
-	NetworkManager::CreateInstance();
+	TCPManager::CreateInstance();
+	UDPManager::CreateInstance();
+	MultiThreadManager::CreateInstance(10);
 	GameInstance::CreateInstance();
 
+	std::vector<std::string> arData{};
+	arData.resize(2);
+	if (FileReader::ReadFile("../Resources/ServerIP/ServerIP.txt", arData))
+	{
+		TCPManager::SetServerIP(arData[0]);
+		UDPManager::SetServerIP(arData[0]);
+		TCPManager::SetTCPPort(std::stoi(arData[1]));
+		UDPManager::SetUDPPort(std::stoi(arData[1]));
+	}
+
 	bool bServer{};
-	bServer = false;
 	bServer = true;
+	bServer = false;
 	if (bServer)
 	{
 		CreateWindow("Snake Server", { 300,300});
@@ -65,9 +82,10 @@ void FrameWork::DestroyInstance()
 		delete m_pInstance->m_pMainScene;
 		m_pInstance->m_pMainScene = nullptr;
 	}
-
 	GameInstance::DestroyInstance();
-	NetworkManager::DestroyInstance();
+	MultiThreadManager::DestroyInstance();
+	UDPManager::DestroyInstance();
+	TCPManager::DestroyInstance();
 	SoundManager::DestroyInstance();
 	TextManager::DestroyInstance();
 	ActorManager::DestroyInstance();
@@ -77,6 +95,7 @@ void FrameWork::DestroyInstance()
 	RenderManager::DestroyInstance();
 	WindowManager::DestroyInstance();
 
+	SDLNet_Quit();
 	delete m_pInstance;
 	m_pInstance = nullptr;
 }
@@ -130,6 +149,7 @@ void FrameWork::ChangeScene(Framework::Scene::E_Type eSceneType)
 		return;
 	Scene* pScene{};
 	m_pInstance->m_eSceneType = eSceneType;
+
 	switch (eSceneType)
 	{
 	case Framework::Scene::E_SnakeGame:
@@ -146,7 +166,7 @@ void FrameWork::ChangeScene(Framework::Scene::E_Type eSceneType)
 	}
 	if (!pScene)
 	{
-		m_pInstance->m_bRunning = false;
+		SetRunning(false);
 		return;
 	}
 
@@ -166,6 +186,5 @@ bool FrameWork::TickUpdate()
 	bool bReulst = m_pInstance->m_nDeltaTime >= m_pInstance->m_nUpdatetick;
 	if (bReulst)
 		m_pInstance->m_nLastUpdate = cur_time_ms;
-	NetworkManager::TickUpdate();
 	return bReulst;
 }

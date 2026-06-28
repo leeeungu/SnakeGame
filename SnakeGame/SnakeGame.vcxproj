@@ -150,10 +150,13 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="ActorManager.cpp" />
     <ClCompile Include="ABlock.cpp" />
+    <ClCompile Include="AMatchingThread.cpp" />
     <ClCompile Include="AOpponent.cpp" />
     <ClCompile Include="ASnake.cpp" />
     <ClCompile Include="ASnakeTitleState.cpp" />
+    <ClCompile Include="ATestPlayer.cpp" />
     <ClCompile Include="ATexture.cpp" />
+    <ClCompile Include="AThreadServer.cpp" />
     <ClCompile Include="DebugMessageManager.cpp" />
     <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="FrameWork.cpp" />
@@ -191,9 +194,12 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorManager.h" />
     <ClInclude Include="ABlock.h" />
+    <ClInclude Include="AMatchingThread.h" />
     <ClInclude Include="AOpponent.h" />
     <ClInclude Include="ASnakeTitleState.h" />
+    <ClInclude Include="ATestPlayer.h" />
     <ClInclude Include="ATexture.h" />
+    <ClInclude Include="AThreadServer.h" />
     <ClInclude Include="DebugMessageManager.h" />
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="FrameWork.h" />

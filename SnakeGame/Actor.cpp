@@ -102,7 +102,7 @@ void C_Actor::SetRegisterRender(bool bValue)
 bool C_Actor::SetEventActor(C_Actor* pActor, int nIndex)
 {
 	C_Actor** ppActor = GetEventActor_Internal(nIndex);
-	if (ppActor && *ppActor == nullptr)
+	if (ppActor )
 	{
 		*ppActor = pActor;
 		DelegateEventActor(nIndex);
@@ -149,6 +149,10 @@ void C_Actor::DestoryEventActorArray()
 {
 	if (!m_arEventActor)
 		return;
+	for (int i = 0; i < m_nEventActorSize; i++)
+	{
+		m_arEventActor[i] = nullptr;
+	}
 	delete[] m_arEventActor;
 	m_arEventActor = nullptr;
 }

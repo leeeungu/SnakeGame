@@ -1,6 +1,5 @@
 #include "DebugMessageManager.h"
 #include "SDL_net.h"
-#include <iostream>
 
 void DebugMessageManager::PrintDebugMesasge_Net(const char* strMessage)
 {

@@ -32,6 +32,7 @@ namespace GameState
 			E_Score,
 			E_Speed,
 			E_Length,
+			E_ClientID,
 			E_EnumMax
 		};
 	}
@@ -52,18 +53,15 @@ public:
 	C_ASnakeGameState();
 	~C_ASnakeGameState();
 
-	GameState::E_Level GetLevel() { return m_nSpeed; }
-
-	void SetScore(int nValue);
-	int GetScore() { return m_nScore; }
-
-	void GameEnd();
+	void GameResult(bool bValue);
+	void SetClientID(int nID);
 protected:
+	void SetScore(int nValue);
 	virtual void DelegateEventActor(int nIndex) override;
 	virtual void Update(Uint32 fDeltaTick) override;
 	void SendState();
 	void SetLevelCount(int nCount);
-	void SetDead();
+	
 	void SetUIBodyCount(int nCount);
 	virtual void HandleEvent() override;
 	virtual void Reset() override;
@@ -71,7 +69,7 @@ protected:
 private:
 	Uint32 m_nCount;
 	int m_nIndex;
-	Sprite::E_SpriteType m_eTexture[4];
+	Sprite::E_SpriteType m_eTexture[6];
 	GameState::E_Level m_nSpeed;
 	Uint32 m_arTicks[GameState::E_Level::E_EnumMax];
 

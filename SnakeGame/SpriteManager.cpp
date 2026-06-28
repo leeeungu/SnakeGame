@@ -20,6 +20,8 @@ void SpriteManager::CreateInstance() {
 	m_pInstance->m_arSpriteIndex[E_SpriteType::E_CountDown3]	= 2;
 	m_pInstance->m_arSpriteIndex[E_SpriteType::E_CountDown2]	= 2;
 	m_pInstance->m_arSpriteIndex[E_SpriteType::E_CountDown1]	= 2;
+	m_pInstance->m_arSpriteIndex[E_SpriteType::E_YouWin] = 2;
+	m_pInstance->m_arSpriteIndex[E_SpriteType::E_YouLose] = 2;
 
 	m_pInstance->m_arSprite[E_SpriteType::E_Block]			= m_pInstance->m_arSnake;
 	m_pInstance->m_arSprite[E_SpriteType::E_Background]		= &m_pInstance->m_arTexture[E_SpriteType::E_Background][0];
@@ -32,6 +34,9 @@ void SpriteManager::CreateInstance() {
 	m_pInstance->m_arSprite[E_SpriteType::E_CountDown3]		= &m_pInstance->m_arTexture[E_SpriteType::E_CountDown3][0];
 	m_pInstance->m_arSprite[E_SpriteType::E_CountDown2]		= &m_pInstance->m_arTexture[E_SpriteType::E_CountDown2][0];
 	m_pInstance->m_arSprite[E_SpriteType::E_CountDown1]		= &m_pInstance->m_arTexture[E_SpriteType::E_CountDown1][0];
+
+	m_pInstance->m_arSprite[E_SpriteType::E_YouWin] = &m_pInstance->m_arTexture[E_SpriteType::E_YouWin][0];
+	m_pInstance->m_arSprite[E_SpriteType::E_YouLose] = &m_pInstance->m_arTexture[E_SpriteType::E_YouLose][0];
 }
 
 void SpriteManager::DestroyInstance() {
@@ -115,6 +120,8 @@ std::string SpriteManager::GetImageFile(Sprite::E_SpriteType eSpriteType)
 	arData[E_SpriteType::E_CountDown3]	= "Countdown3.png";
 	arData[E_SpriteType::E_CountDown2]	= "Countdown2.png";
 	arData[E_SpriteType::E_CountDown1]	= "Countdown1.png";
+	arData[E_SpriteType::E_YouWin]	= "WinTexure.png";
+	arData[E_SpriteType::E_YouLose]	= "LoseTexture.png";
 	return arData[eSpriteType];
 }
 
@@ -166,6 +173,12 @@ void SpriteManager::GetSourceRect(Sprite::E_SpriteType eSpriteType, std::vector<
 		break;
 	case Sprite::E_CountDown1:
 		arResult = { SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ 0, 0, 75, 110} };
+		break;
+	case Sprite::E_YouWin:
+		arResult = { SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ 0, 0, 582, 300} };
+		break;
+	case Sprite::E_YouLose:
+		arResult = { SDL_Rect{ 0, 0, 0, 0 }, SDL_Rect{ 0, 0, 636, 300} };
 		break;
 	}
 }

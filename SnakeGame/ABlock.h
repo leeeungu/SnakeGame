@@ -30,8 +30,6 @@ public:
 	SDL_Point GetCoord() { return m_nCoord;}
 	Block::Apple::E_TypeID GetAppleType() { return m_eApple; }
 	
-	void SendMessage();
-
 protected:
 	virtual bool RecvUDPMessage(void* pMessage, int nMessageLength) override;
 	virtual void Render() override;

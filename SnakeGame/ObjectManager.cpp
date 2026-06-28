@@ -25,8 +25,7 @@ void ObjectManager::RegisterObject(C_Object* pObject)
         m_pInstance->m_queBegin.push(pObject);
     m_pInstance->m_setObject.insert(pObject);
     Object::E_UpdateLayer Layer = pObject->GetUpdateLayer();
-    if (pObject->GetRegisterUpdate())
-        m_pInstance->m_setObjectLayer[Layer].insert(pObject);
+    m_pInstance->m_setObjectLayer[Layer].insert(pObject);
 }
 
 void ObjectManager::UnRegisterObject(C_Object* pObject)
@@ -34,7 +33,6 @@ void ObjectManager::UnRegisterObject(C_Object* pObject)
     m_pInstance->m_setObject.erase(pObject);
     pObject->EndPlayObject();
     Object::E_UpdateLayer Layer = pObject->GetUpdateLayer();
-    if (pObject->GetRegisterUpdate())
         m_pInstance->m_setObjectLayer[Layer].erase(pObject);
 }
 

@@ -1,6 +1,6 @@
 #include "Object.h"
 #include "ObjectManager.h"
-#include "NetworkManager.h"
+#include "UDPManager.h"
 
 C_Object::C_Object()
 {
@@ -21,11 +21,11 @@ void C_Object::SetRegisterUpdate(bool bValue)
 {
 	if (bValue == m_bRegisterUpdate)
 		return;
-	m_bRegisterUpdate = bValue;
 	if (bValue)
 		ObjectManager::RegisterObject(this);
 	else
 		ObjectManager::UnRegisterObject(this);
+	m_bRegisterUpdate = bValue;
 }
 
 void C_Object::BeginPlayObject()
@@ -57,11 +57,12 @@ void C_Object::HandleEventObject()
 	HandleEvent();
 }
 
-bool C_Object::RecvObject(Network::Protocol::E_ProtocolType eSocketType,int nMessageType, void* pMessage, int nMessageLength)
+bool C_Object::SendUDPMessage(void* pMessage, int nMessageLength)
 {
-	if (eSocketType == Network::Protocol::E_ProtocolType::E_TCP)
-		return RecvTCPMessage(pMessage);
-	if (eSocketType == Network::Protocol::E_ProtocolType::E_UDP)
-		return RecvUDPMessage(pMessage, nMessageLength);
-	return false;
+	Network::Client::S_Client* pClient = (Network::Client::S_Client*)UDPManager::GetHost();
+	if (!pClient)
+		return false;
+	memcpy(pMessage, &pClient->nClientID, sizeof(int));
+	pClient->pUDPPacket->address = pClient->sUDPAddress;
+	return UDPManager::UDPSend(*UDPManager::GetHost(), pMessage, nMessageLength);
 }

@@ -4,8 +4,6 @@
 #include "SDL_stdinc.h"
 #include "NetworkManager.h"
 class ObjectManager;
-//enum E_SocketType;
-//enum Network::Socket::E_SocketType;
 
 __interface I_Object
 {
@@ -69,7 +67,11 @@ public:
 	void ResetObject();
 	void HandleEventObject();
 
-	bool RecvObject(Network::Protocol::E_ProtocolType eSocketType, int nMessageType, void* pMessage, int nMessageLength);
+	virtual bool RecvTCPMessage(void* pMessage)  override { return false; };
+	virtual bool RecvUDPMessage(void* pMessage, int nMessageLength)  override { return false; };
+protected:
+	 bool SendUDPMessage(void* pMessage, int nMessageLength);
+
 protected:
 	virtual void InitObject() override {};
 	// I_Object을(를) 통해 상속됨
@@ -79,6 +81,4 @@ protected:
 	virtual void Update(Uint32 fDeltaTick) override {};
 	virtual void EndPlay() override {};
 	virtual void Reset() override {};
-	virtual bool RecvTCPMessage(void* pMessage)  override { return false;};
-	virtual bool RecvUDPMessage(void* pMessage, int nMessageLength)  override { return false;};
 };

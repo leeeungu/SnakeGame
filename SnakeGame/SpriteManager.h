@@ -20,6 +20,8 @@ namespace Sprite
 		E_CountDown3,
 		E_CountDown2,
 		E_CountDown1,
+		E_YouWin,
+		E_YouLose,
 		E_EnumMax
 	};
 

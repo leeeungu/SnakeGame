@@ -46,7 +46,7 @@ public:
 	static void SetUpdatetick(Uint32 nTick) { m_pInstance->m_nUpdatetick = nTick; }
 	static Uint32 GetUpdatetick() { return	m_pInstance->m_nUpdatetick; }
 	static Uint32 GetDeltaTime() { return	m_pInstance->m_nDeltaTime; }
-
+	static Framework::Scene::E_Type GetSceneType() { return m_pInstance->m_eSceneType; }
 public:
 	static void ChangeScene(Framework::Scene::E_Type eSceneType);
 

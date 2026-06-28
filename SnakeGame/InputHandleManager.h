@@ -138,9 +138,11 @@ public:
     // KeyBoard
     static bool RegisterKeyBoard(InputHandle::KeyBoard::InputType::E_TypeID eInputID, InputHandle::KeyBoard::ValueType::E_TypeID eValueID, C_Object* pObject);
     static bool UnRegisterKeyBoard(InputHandle::KeyBoard::InputType::E_TypeID eInputID, InputHandle::KeyBoard::ValueType::E_TypeID eValueID, C_Object* pObject);
+    static int PushInputKeyBoard(SDL_EventType eEventType, SDL_KeyCode eKeyCode);
     // Mouse
     static bool RegisterMouse(InputHandle::Mouse::InputType::E_TypeID eInputID, InputHandle::Mouse::ValueType::E_TypeID eValueID, C_Object* pObject);
     static bool UnRegisterMouse(InputHandle::Mouse::InputType::E_TypeID eInputID, InputHandle::Mouse::ValueType::E_TypeID eValueID, C_Object* pObject);
+    static int PushInputMouse(SDL_EventType eEventType, Uint8 nButton);
     // System
     static bool RegisterSystem(InputHandle::System::InputType::E_TypeID eInputID, C_Object* pObject);
     static bool UnRegisterSystem(InputHandle::System::InputType::E_TypeID eInputID, C_Object* pObject);

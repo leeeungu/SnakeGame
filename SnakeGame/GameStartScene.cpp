@@ -4,6 +4,7 @@
 #include "SoundManager.h"
 #include "AClient.h"
 #include "ASnakeTitleState.h"
+#include "FrameWork.h"
 #include "GameInstance.h"
 
 GameStartScene::GameStartScene()
@@ -16,7 +17,11 @@ GameStartScene::GameStartScene()
 		C_AClient* pClient = new C_AClient{};
 		GameInstance::AddObject(GameInstance::E_Client, pClient);
 	}
-
+	C_AClient* pClient = (C_AClient*)GameInstance::GetObject(GameInstance::E_Client);
+	if (pClient)
+		pClient->SetEventActor(nullptr, C_AClient::E_EventActor::E_AOpponent);
+	if (pClient)
+		pClient->SetEventActor(nullptr, C_AClient::E_EventActor::E_AGameState);
 	C_ASnakeTitleState* pState = new C_ASnakeTitleState{};
 	SetSceneObject(E_TitleState, pState);
 
@@ -44,6 +49,7 @@ GameStartScene::GameStartScene()
 	pState->SetEventActor(pTexture, C_ASnakeTitleState::E_Text);
 
 	SoundManager::FadeInMusic(Sound::Music::E_Title);
+	FrameWork::SetUpdate(true);
 }
 
 GameStartScene::~GameStartScene()
