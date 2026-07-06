@@ -109,16 +109,19 @@ void C_AMatchingThread::UDPFunc(int nIndex)
 		{
 			UDPpacket* pPacket = m_queUDPPacket[nIndex].front();
 			m_queUDPPacket[nIndex].pop();
-			m_queUDPPacket[nIndex].push(pPacket);
-			S_Data sRecv{};
-			memcpy(&sRecv, pPacket->data, sRecv.nMessageSize);
-			if (pSrc->nClientID == sRecv.nClientID &&
-				E_MessageID::E_None < sRecv.eMessageID && sRecv.eMessageID < E_MessageID::E_EnumMax)
+			// 상대 주소로 바궈서 중계
 			{
-				pPacket->address = pDst->sUDPAddress;
-				quePacket.push(pPacket);
+				m_queUDPPacket[nIndex].push(pPacket);
+				S_Data sRecv{};
+				memcpy(&sRecv, pPacket->data, sRecv.nMessageSize);
+				if (pSrc->nClientID == sRecv.nClientID &&
+					E_MessageID::E_None < sRecv.eMessageID && sRecv.eMessageID < E_MessageID::E_EnumMax)
+				{
+					pPacket->address = pDst->sUDPAddress;
+					quePacket.push(pPacket);
+				}
+				nSize--;
 			}
-			nSize--;
 		}
 	}
 	m_pMainServer->SendPacket(quePacket);

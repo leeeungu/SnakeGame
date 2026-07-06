@@ -29,7 +29,7 @@ C_AClient ::C_AClient ()
 	
 	SetRegisterUpdate(true);
 	SetUpdate(true);
-	m_pPlayer = new C_ATestPlayer{};
+	//m_pPlayer = new C_ATestPlayer{};
 
 	m_SocketSet = SDLNet_AllocSocketSet(2);
 	SDLNet_TCP_AddSocket(m_SocketSet, m_sClient.sTCPSocket);
@@ -38,7 +38,8 @@ C_AClient ::C_AClient ()
 C_AClient ::~C_AClient ()
 {
 	SDLNet_FreeSocketSet(m_SocketSet);
-	delete m_pPlayer;
+	if(m_pPlayer)
+		delete m_pPlayer;
 	m_pPlayer = nullptr;
 	using namespace TCP::Message;
 	m_bMatching = false;

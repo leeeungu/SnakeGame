@@ -70,6 +70,7 @@ void FrameWork::CreateInstance()
 		m_pInstance->ChangeScene(Framework::Scene::E_Title);
 		m_pInstance->SetUpdatetick(33);
 	}
+
 }
 
 void FrameWork::DestroyInstance()

@@ -149,7 +149,7 @@ void InputHandleManager::HandleEvent()
 {
 	using namespace InputHandle;
 	SDL_Event event{};
-	if (SDL_PollEvent(&event)) {
+	while (SDL_PollEvent(&event)) {
 
 		m_pInstance->SetEvent(event);
 		m_pInstance->RunObject(event);

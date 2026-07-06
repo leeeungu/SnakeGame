@@ -153,13 +153,13 @@ namespace TCP
 class TCPManager
 {
 public:
-	struct S_Packet
-	{
-		S_Packet() = default;
-		TCP::Message::S_Data sData;
-		void* pPacket;
-		int nIndex;
-	};
+	//struct S_Packet
+	//{
+	//	S_Packet() = default;
+	//	TCP::Message::S_Data sData;
+	//	void* pPacket;
+	//	int nIndex;
+	//};
 private:
 	TCPManager() = default;
 	static TCPManager* m_pInstance;
